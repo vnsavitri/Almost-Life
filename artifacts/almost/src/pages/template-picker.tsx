@@ -145,7 +145,7 @@ export default function TemplatePicker() {
         </div>
 
         {/* Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1px", backgroundColor: "rgba(82,5,10,0.1)" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.5rem" }}>
           {TEMPLATES.map(t => (
             <button
               key={t.key}
