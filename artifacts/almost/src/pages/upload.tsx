@@ -136,7 +136,7 @@ export default function Upload() {
             onMouseEnter={e => (e.currentTarget.style.opacity = "0.8")}
             onMouseLeave={e => (e.currentTarget.style.opacity = "0.4")}
           >
-            Use Zelda's demo profile instead →
+            What if Zelda hadn't sealed Ganon? →
           </button>
         </div>
       </div>

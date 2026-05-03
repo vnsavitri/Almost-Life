@@ -112,7 +112,7 @@ export default function Home() {
               onClick={() => { sessionStorage.setItem("almost_demo", "true"); sessionStorage.removeItem("almost_pdf_b64"); navigate("/branches"); }}
               style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#1A1A1A", opacity: 1, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textDecorationColor: "rgba(26,26,26,0.3)", textUnderlineOffset: "3px", padding: 0 }}
             >
-              try the demo
+              what if Zelda hadn't sealed Ganon?
             </button>
           </span>
         </div>
