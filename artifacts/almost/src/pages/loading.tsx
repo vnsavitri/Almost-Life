@@ -37,6 +37,7 @@ export default function Loading() {
 
     const branch: Branch = JSON.parse(branchRaw);
     const allBranches: Branch[] = JSON.parse(sessionStorage.getItem("almost_all_branches") || "[]");
+    const templateType = sessionStorage.getItem("almost_template_type") || "linkedin_ghost";
 
     const pool = allBranches.length > 0 ? allBranches : [branch];
     const positions = [12, 34, 58, 80];
@@ -54,24 +55,20 @@ export default function Loading() {
       setTimeout(() => { setOneLinerIndex((i) => (i + 1) % ONE_LINERS.length); setOneLinerVisible(true); }, 400);
     }, 3000);
 
-    // Generate just the first template (linkedin_ghost) — ~10-15s, under the 30s proxy limit
     if (!calledRef.current) {
       calledRef.current = true;
       const isDemo = sessionStorage.getItem("almost_demo") === "true";
       const pdfB64 = sessionStorage.getItem("almost_pdf_b64");
 
-      // Clear any stale cached templates
-      ["linkedin_ghost", "wiki_stub", "museum_plaque", "tarot_card"].forEach((t) =>
-        sessionStorage.removeItem(`almost_life_${t}`)
-      );
-      sessionStorage.removeItem("almost_life_core");
+      // Clear stale result
+      sessionStorage.removeItem("almost_life_result");
 
       fetch("/api/generate-life", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           branch,
-          template_type: "linkedin_ghost",
+          template_type: templateType,
           demo: isDemo || undefined,
           pdf_b64: pdfB64 || undefined,
         }),
@@ -82,17 +79,15 @@ export default function Loading() {
         })
         .then((data) => {
           if (data.life) {
-            // Cache the core fields and the first template separately
-            const { linkedin_ghost, ...core } = data.life;
-            sessionStorage.setItem("almost_life_core", JSON.stringify(core));
-            sessionStorage.setItem("almost_life_linkedin_ghost", JSON.stringify(linkedin_ghost));
+            sessionStorage.setItem("almost_life_result", JSON.stringify(data.life));
           }
           navigate("/result");
         })
         .catch(() => navigate("/result"));
     }
 
-    const bail = setTimeout(() => navigate("/result"), 28000);
+    // Safety bail — navigate regardless after 27s
+    const bail = setTimeout(() => navigate("/result"), 27000);
 
     return () => {
       clearInterval(liner);
