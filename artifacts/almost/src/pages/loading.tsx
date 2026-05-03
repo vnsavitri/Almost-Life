@@ -74,13 +74,13 @@ export default function Loading() {
   const currentLiner = poolRef.current[oneLinerIndex] ?? "Considering the lives you didn't live...";
 
   return (
-    <main className="grain" style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <main className="grain" style={{ backgroundColor: "#BCD2EE", color: "#52050A", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
 
       {/* Top bar */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1rem 2rem", borderBottom: "1px solid rgba(26,26,26,0.06)" }}>
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "#E07856", opacity: 0.6 }}>Generating</span>
-        <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "1rem", color: "#1A1A1A", opacity: 0.35 }}>Almost</span>
-        <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "5rem", fontWeight: 200, color: "#1A1A1A", opacity: 0.05, lineHeight: 1, userSelect: "none" }}>04</span>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1rem 2rem", borderBottom: "1px solid rgba(82,5,10,0.06)" }}>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "#832161", opacity: 0.6 }}>Generating</span>
+        <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "1rem", color: "#52050A", opacity: 0.35 }}>Almost</span>
+        <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "5rem", fontWeight: 200, color: "#52050A", opacity: 0.05, lineHeight: 1, userSelect: "none" }}>04</span>
       </div>
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "4rem 2rem", maxWidth: "760px", width: "100%", margin: "0 auto" }}>
@@ -94,20 +94,20 @@ export default function Loading() {
         `}</style>
 
         {/* Section label */}
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "#1A1A1A", opacity: 0.3, marginBottom: "3rem" }}>
+        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "#52050A", opacity: 0.3, marginBottom: "3rem" }}>
           Tracing the divergence
         </p>
 
         {/* Top timeline */}
         <div style={{ marginBottom: "4.5rem" }}>
-          <div style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#1A1A1A", opacity: 0.3, marginBottom: "0.75rem" }}>This life</div>
+          <div style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#52050A", opacity: 0.3, marginBottom: "0.75rem" }}>This life</div>
           <div style={{ position: "relative", height: "28px" }}>
-            <div style={{ position: "absolute", top: "13px", left: 0, right: 0, height: "1px", backgroundColor: "#1A1A1A", opacity: 0.2 }} />
-            <div className="dot-top" style={{ position: "absolute", top: "7px", width: "13px", height: "13px", borderRadius: "50%", backgroundColor: "#1A1A1A", opacity: 0.6 }} />
+            <div style={{ position: "absolute", top: "13px", left: 0, right: 0, height: "1px", backgroundColor: "#52050A", opacity: 0.2 }} />
+            <div className="dot-top" style={{ position: "absolute", top: "7px", width: "13px", height: "13px", borderRadius: "50%", backgroundColor: "#52050A", opacity: 0.6 }} />
             {topMarkers.map((m, i) => visibleTop.includes(i) ? (
               <div key={i} className="marker-in" style={{ position: "absolute", left: `${m.pct}%`, top: "-28px", transform: "translateX(-50%)", textAlign: "center", opacity: 0 }}>
-                <div style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.5625rem", color: "#1A1A1A", opacity: 0.5, whiteSpace: "nowrap" }}>{m.year} — {m.label}</div>
-                <div style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: "#1A1A1A", opacity: 0.3, margin: "3px auto 0" }} />
+                <div style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.5625rem", color: "#52050A", opacity: 0.5, whiteSpace: "nowrap" }}>{m.year} — {m.label}</div>
+                <div style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: "#52050A", opacity: 0.3, margin: "3px auto 0" }} />
               </div>
             ) : null)}
           </div>
@@ -115,27 +115,27 @@ export default function Loading() {
 
         {/* Bottom timeline */}
         <div style={{ marginBottom: "5rem" }}>
-          <div style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#E07856", opacity: 0.5, marginBottom: "0.75rem" }}>The other one</div>
+          <div style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#832161", opacity: 0.5, marginBottom: "0.75rem" }}>The other one</div>
           <div style={{ position: "relative", height: "28px" }}>
-            <div style={{ position: "absolute", top: "13px", left: 0, right: 0, height: "1px", backgroundImage: "repeating-linear-gradient(90deg, #E07856 0px, #E07856 8px, transparent 8px, transparent 16px)", opacity: 0.35 }} />
-            <div className="dot-bottom" style={{ position: "absolute", top: "7px", width: "13px", height: "13px", borderRadius: "50%", backgroundColor: "#E07856", opacity: 0.55 }} />
+            <div style={{ position: "absolute", top: "13px", left: 0, right: 0, height: "1px", backgroundImage: "repeating-linear-gradient(90deg, #832161 0px, #832161 8px, transparent 8px, transparent 16px)", opacity: 0.35 }} />
+            <div className="dot-bottom" style={{ position: "absolute", top: "7px", width: "13px", height: "13px", borderRadius: "50%", backgroundColor: "#832161", opacity: 0.55 }} />
             {bottomMarkers.map((m, i) => visibleBottom.includes(i) ? (
               <div key={i} className="marker-in" style={{ position: "absolute", left: `${m.pct}%`, bottom: "-28px", transform: "translateX(-50%)", textAlign: "center", opacity: 0 }}>
-                <div style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: "#E07856", opacity: 0.4, margin: "0 auto 3px" }} />
-                <div style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.5625rem", color: "#E07856", opacity: 0.6, whiteSpace: "nowrap" }}>{m.year} — {m.label}</div>
+                <div style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: "#832161", opacity: 0.4, margin: "0 auto 3px" }} />
+                <div style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.5625rem", color: "#832161", opacity: 0.6, whiteSpace: "nowrap" }}>{m.year} — {m.label}</div>
               </div>
             ) : null)}
           </div>
         </div>
 
         {/* One-liner */}
-        <div style={{ borderTop: "1px solid rgba(26,26,26,0.08)", paddingTop: "2rem" }}>
+        <div style={{ borderTop: "1px solid rgba(82,5,10,0.08)", paddingTop: "2rem" }}>
           <p style={{
             fontFamily: "'Fraunces', Georgia, serif",
             fontStyle: "italic",
             fontWeight: 300,
             fontSize: "clamp(0.9375rem, 2.5vw, 1.125rem)",
-            color: "#1A1A1A",
+            color: "#52050A",
             opacity: oneLinerVisible ? 0.5 : 0,
             transition: "opacity 0.4s ease",
             letterSpacing: "0.005em",

@@ -3,7 +3,7 @@ import { Link } from "wouter";
 export default function NotFound() {
   return (
     <main
-      style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A" }}
+      style={{ backgroundColor: "#BCD2EE", color: "#52050A" }}
       className="min-h-screen flex flex-col items-center justify-center"
     >
       <h1
@@ -24,7 +24,7 @@ export default function NotFound() {
           style={{
             fontFamily: "'Inter', sans-serif",
             fontSize: "0.8rem",
-            color: "#E07856",
+            color: "#832161",
             marginTop: "2rem",
             display: "block",
             cursor: "pointer",

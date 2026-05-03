@@ -12,7 +12,7 @@ export default function Home() {
   }
 
   return (
-    <main className="grain" style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A", minHeight: "100vh", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
+    <main className="grain" style={{ backgroundColor: "#BCD2EE", color: "#52050A", minHeight: "100vh", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
 
       {/* Ghost years — background texture */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
@@ -22,7 +22,7 @@ export default function Home() {
             fontFamily: "'Fraunces', Georgia, serif",
             fontWeight: 200,
             fontSize: "clamp(5rem, 18vw, 14rem)",
-            color: "#1A1A1A",
+            color: "#52050A",
             opacity: 0.025 + i * 0.008,
             letterSpacing: "-0.03em",
             userSelect: "none",
@@ -35,11 +35,11 @@ export default function Home() {
       </div>
 
       {/* Top bar */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 2rem", borderBottom: "1px solid rgba(26,26,26,0.06)", position: "relative", zIndex: 1 }}>
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#1A1A1A", opacity: 0.3 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 2rem", borderBottom: "1px solid rgba(82,5,10,0.06)", position: "relative", zIndex: 1 }}>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#52050A", opacity: 0.3 }}>
           A Thought Experiment
         </span>
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#E07856", opacity: 0.7 }}>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#832161", opacity: 0.7 }}>
           Vol. I
         </span>
       </div>
@@ -56,7 +56,7 @@ export default function Home() {
             fontStyle: "italic",
             lineHeight: 0.88,
             letterSpacing: "-0.03em",
-            color: "#1A1A1A",
+            color: "#52050A",
             margin: 0,
             marginLeft: "-0.04em",
           }}>
@@ -67,7 +67,7 @@ export default function Home() {
             fontStyle: "italic",
             fontWeight: 300,
             fontSize: "clamp(0.875rem, 2vw, 1.125rem)",
-            color: "#1A1A1A",
+            color: "#52050A",
             opacity: 0.45,
             marginTop: "1.25rem",
             paddingLeft: "0.1em",
@@ -78,7 +78,7 @@ export default function Home() {
         </div>
 
         {/* Ruled divider */}
-        <div style={{ width: "3rem", height: "1px", backgroundColor: "#E07856", opacity: 0.5, marginBottom: "2.5rem" }} />
+        <div style={{ width: "3rem", height: "1px", backgroundColor: "#832161", opacity: 0.5, marginBottom: "2.5rem" }} />
 
         {/* Begin */}
         <div style={{ display: "flex", alignItems: "center", gap: "3rem" }}>
@@ -89,7 +89,7 @@ export default function Home() {
               fontSize: "0.8125rem",
               letterSpacing: "0.1em",
               textTransform: "uppercase",
-              color: "#1A1A1A",
+              color: "#52050A",
               background: "none",
               border: "none",
               padding: 0,
@@ -101,16 +101,16 @@ export default function Home() {
             onMouseEnter={e => { (e.currentTarget.querySelector('.arr') as HTMLElement).style.transform = "translateX(4px)"; }}
             onMouseLeave={e => { (e.currentTarget.querySelector('.arr') as HTMLElement).style.transform = "translateX(0)"; }}
           >
-            <span style={{ width: "2rem", height: "1px", backgroundColor: "#1A1A1A", display: "inline-block", flexShrink: 0 }} />
+            <span style={{ width: "2rem", height: "1px", backgroundColor: "#52050A", display: "inline-block", flexShrink: 0 }} />
             Begin
             <span className="arr" style={{ display: "inline-block", transition: "transform 0.2s ease" }}>→</span>
           </button>
 
-          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#1A1A1A", opacity: 0.3 }}>
+          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#52050A", opacity: 0.3 }}>
             or{" "}
             <button
               onClick={() => { sessionStorage.setItem("almost_demo", "true"); sessionStorage.removeItem("almost_pdf_b64"); navigate("/branches"); }}
-              style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#1A1A1A", opacity: 1, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textDecorationColor: "rgba(26,26,26,0.3)", textUnderlineOffset: "3px", padding: 0 }}
+              style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#52050A", opacity: 1, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textDecorationColor: "rgba(82,5,10,0.3)", textUnderlineOffset: "3px", padding: 0 }}
             >
               what if Zelda hadn't sealed Ganon?
             </button>
@@ -119,11 +119,11 @@ export default function Home() {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", padding: "1.25rem 2rem", borderTop: "1px solid rgba(26,26,26,0.06)", position: "relative", zIndex: 1 }}>
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.06em", color: "#1A1A1A", opacity: 0.25, maxWidth: "28ch", lineHeight: 1.6 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", padding: "1.25rem 2rem", borderTop: "1px solid rgba(82,5,10,0.06)", position: "relative", zIndex: 1 }}>
+        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.06em", color: "#52050A", opacity: 0.25, maxWidth: "28ch", lineHeight: 1.6 }}>
           Upload your LinkedIn. Pick a fork in the road. See the other version of you.
         </p>
-        <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.625rem", color: "#1A1A1A", opacity: 0.2 }}>
+        <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.625rem", color: "#52050A", opacity: 0.2 }}>
           Powered by Claude
         </span>
       </div>

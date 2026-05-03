@@ -53,9 +53,9 @@
   --app-font-serif: 'Fraunces', Georgia, serif;
   --app-font-mono: 'Courier New', Courier, monospace;
   --radius: 0.125rem;
-  --ink: #1A1A1A;
-  --cream: #F5EFE6;
-  --coral: #E07856;
+  --ink: #52050A;
+  --cream: #BCD2EE;
+  --coral: #832161;
 }
 
 @layer base {
@@ -69,8 +69,8 @@
   }
 
   ::selection {
-    background: #E07856;
-    color: #F5EFE6;
+    background: #832161;
+    color: #BCD2EE;
   }
 
   h1, h2, h3 { font-family: var(--app-font-serif); }
@@ -78,7 +78,7 @@
   /* Scrollbar */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(26,26,26,0.15); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb { background: rgba(82,5,10,0.15); border-radius: 2px; }
 }
 
 /* Grain overlay — applied to pages that want it */
@@ -102,14 +102,14 @@
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-size: 0.8125rem;
-  color: #1A1A1A;
+  color: #52050A;
   text-decoration: underline;
-  text-decoration-color: rgba(26,26,26,0.25);
+  text-decoration-color: rgba(82,5,10,0.25);
   text-underline-offset: 4px;
   letter-spacing: 0.02em;
   transition: text-decoration-color 0.15s;
 }
-.link-btn:hover { text-decoration-color: #1A1A1A; }
+.link-btn:hover { text-decoration-color: #52050A; }
 
 /* Ruled inline action */
 .ruled-action {
@@ -120,7 +120,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #1A1A1A;
+  color: #52050A;
   cursor: pointer;
   background: none;
   border: none;

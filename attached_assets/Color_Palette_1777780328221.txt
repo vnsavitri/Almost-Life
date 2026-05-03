@@ -1,0 +1,31 @@
+/* Coolors Exported Palette - https://coolors.co/bcd2ee-9b7ede-832161-52050a-76e7cd */
+
+- CSV
+
+bcd2ee,9b7ede,832161,52050a,76e7cd
+
+- With #
+
+#bcd2ee, #9b7ede, #832161, #52050a, #76e7cd
+
+- Array
+
+["bcd2ee","9b7ede","832161","52050a","76e7cd"]
+
+- Object
+
+{"Pale Sky":"bcd2ee","Soft Periwinkle":"9b7ede","Royal Plum":"832161","Night Bordeaux":"52050a","Turquoise":"76e7cd"}
+
+- Extended Array
+
+[{"name":"Pale Sky","hex":"bcd2ee","rgb":[188,210,238],"cmyk":[21,12,0,7],"hsb":[214,21,93],"hsl":[214,60,84],"lab":[83,-1,-16]},{"name":"Soft Periwinkle","hex":"9b7ede","rgb":[155,126,222],"cmyk":[30,43,0,13],"hsb":[258,43,87],"hsl":[258,59,68],"lab":[59,32,-45]},{"name":"Royal Plum","hex":"832161","rgb":[131,33,97],"cmyk":[0,75,26,49],"hsb":[321,75,51],"hsl":[321,60,32],"lab":[31,47,-14]},{"name":"Night Bordeaux","hex":"52050a","rgb":[82,5,10],"cmyk":[0,94,88,68],"hsb":[356,94,32],"hsl":[356,89,17],"lab":[15,34,19]},{"name":"Turquoise","hex":"76e7cd","rgb":[118,231,205],"cmyk":[49,0,11,9],"hsb":[166,49,91],"hsl":[166,70,68],"lab":[85,-38,3]}]
+
+- XML
+
+<palette>
+  <color name="Pale Sky" hex="bcd2ee" r="188" g="210" b="238" />
+  <color name="Soft Periwinkle" hex="9b7ede" r="155" g="126" b="222" />
+  <color name="Royal Plum" hex="832161" r="131" g="33" b="97" />
+  <color name="Night Bordeaux" hex="52050a" r="82" g="5" b="10" />
+  <color name="Turquoise" hex="76e7cd" r="118" g="231" b="205" />
+</palette>

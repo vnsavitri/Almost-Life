@@ -56,7 +56,7 @@ export default function LinkedInGhost({ data }: { data: LifeData }) {
           <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "#000", marginBottom: "1rem" }}>Experience</h3>
           {lg.experience.map((exp, i) => (
             <div key={i} style={{ display: "flex", gap: "1rem", marginBottom: i < lg.experience.length - 1 ? "1.25rem" : 0 }}>
-              <Initials name={exp.company} size={48} bg={["#0A66C2","#E07856","#2d6a4f"][i % 3]} />
+              <Initials name={exp.company} size={48} bg={["#0A66C2","#832161","#2d6a4f"][i % 3]} />
               <div>
                 <p style={{ fontSize: "0.9375rem", fontWeight: 600, color: "#000", marginBottom: "1px" }}>{exp.title}</p>
                 <p style={{ fontSize: "0.875rem", color: "#000", marginBottom: "1px" }}>{exp.company}</p>
