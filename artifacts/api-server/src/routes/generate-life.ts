@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Anthropic from "@anthropic-ai/sdk";
+import { rateLimitGenerations } from "../middlewares/rate-limit";
 
 const router = Router();
 
@@ -129,7 +130,7 @@ const TEMPLATE_SCHEMAS: Record<string, string> = {
 }`,
 };
 
-router.post("/generate-life", async (req, res) => {
+router.post("/generate-life", rateLimitGenerations, async (req, res) => {
   const { branch, demo, pdf_b64, template_type = "linkedin_ghost" } = req.body as {
     branch: { year: string; framing: string; context: string };
     demo?: boolean;
@@ -186,7 +187,7 @@ Generate the parallel life for this person based on the profile above.`;
   content.push({ type: "text", text: userText });
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-5",
+    model: "claude-3-5-haiku-20241022",
     max_tokens: 2048,
     system: systemPrompt,
     messages: [{ role: "user", content }],
