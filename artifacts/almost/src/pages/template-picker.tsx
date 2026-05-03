@@ -58,12 +58,23 @@ const TEMPLATES: { key: TemplateKey; num: string; label: string; sub: string; pr
     label: "Museum Plaque",
     sub: "80 words. All restraint.",
     preview: (
-      <div style={{ backgroundColor: "#BCD2EE", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "16px", textAlign: "center" }}>
-        <div style={{ width: "24px", height: "1px", backgroundColor: "#52050A", opacity: 0.2, marginBottom: "10px" }} />
-        <div style={{ fontFamily: "'Georgia', serif", fontSize: "8.5px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#52050A", marginBottom: "4px" }}>Parallel Life No. 3</div>
-        <div style={{ fontFamily: "'Georgia', serif", fontSize: "6px", fontStyle: "italic", color: "#555", marginBottom: "10px" }}>oil on regret, 2014–present</div>
-        {[85, 92, 78, 88, 70].map((w, i) => <div key={i} style={{ height: "3px", backgroundColor: "rgba(82,5,10,0.12)", borderRadius: "1px", marginBottom: "2.5px", width: `${w}%` }} />)}
-        <div style={{ width: "24px", height: "1px", backgroundColor: "#52050A", opacity: 0.2, marginTop: "10px" }} />
+      <div style={{ backgroundColor: "#111010", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
+        <div style={{ backgroundColor: "#C8A96E", backgroundImage: "radial-gradient(ellipse at 30% 20%, rgba(255,235,180,0.25) 0%, transparent 60%)", padding: "14px 18px", position: "relative", width: "100%", maxWidth: "160px", textAlign: "center", boxShadow: "0 4px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,220,120,0.4)" }}>
+          <div style={{ position: "absolute", inset: "5px", border: "1px solid rgba(80,40,0,0.2)", pointerEvents: "none" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "8px" }}>
+            <div style={{ flex: 1, height: "0.5px", backgroundColor: "rgba(80,40,0,0.3)" }} />
+            <span style={{ fontSize: "5px", color: "rgba(80,40,0,0.5)" }}>✦</span>
+            <div style={{ flex: 1, height: "0.5px", backgroundColor: "rgba(80,40,0,0.3)" }} />
+          </div>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: "8px", fontWeight: 700, letterSpacing: "0.06em", color: "#2A1800", marginBottom: "3px" }}>Parallel Life No. 3</div>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: "5px", fontStyle: "italic", color: "rgba(42,24,0,0.6)", marginBottom: "8px" }}>oil on regret, 2014–present</div>
+          {[85, 92, 78].map((w, i) => <div key={i} style={{ height: "2.5px", backgroundColor: "rgba(42,24,0,0.15)", borderRadius: "1px", marginBottom: "2px", width: `${w}%` }} />)}
+          <div style={{ display: "flex", alignItems: "center", gap: "4px", marginTop: "8px" }}>
+            <div style={{ flex: 1, height: "0.5px", backgroundColor: "rgba(80,40,0,0.3)" }} />
+            <span style={{ fontSize: "5px", color: "rgba(80,40,0,0.5)" }}>✦</span>
+            <div style={{ flex: 1, height: "0.5px", backgroundColor: "rgba(80,40,0,0.3)" }} />
+          </div>
+        </div>
       </div>
     ),
   },
@@ -73,13 +84,21 @@ const TEMPLATES: { key: TemplateKey; num: string; label: string; sub: string; pr
     label: "The Tarot Card",
     sub: "Cards don't lie.",
     preview: (
-      <div style={{ backgroundColor: "#1B2541", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "12px", position: "relative" }}>
-        <div style={{ position: "absolute", inset: "7px", border: "1px solid rgba(212,175,55,0.35)", pointerEvents: "none" }} />
-        <div style={{ fontFamily: "'Georgia', serif", fontSize: "5.5px", color: "rgba(212,175,55,0.55)", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "8px" }}>The Almost · IV</div>
-        <div style={{ fontSize: "24px", marginBottom: "8px", lineHeight: 1 }}>✦</div>
-        <div style={{ fontFamily: "'Georgia', serif", fontSize: "8px", fontWeight: 700, color: "rgba(212,175,55,0.9)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "5px" }}>The Berliner</div>
-        <div style={{ fontFamily: "'Georgia', serif", fontSize: "5.5px", fontStyle: "italic", color: "rgba(255,255,255,0.45)", textAlign: "center", lineHeight: 1.6, maxWidth: "80px", marginBottom: "8px" }}>Suit of Distance</div>
-        {[70, 60].map((w, i) => <div key={i} style={{ height: "3px", backgroundColor: "rgba(255,255,255,0.07)", borderRadius: "1px", marginBottom: "2px", width: `${w}%` }} />)}
+      <div style={{ backgroundColor: "#0D0A14", backgroundImage: "radial-gradient(ellipse at 50% 0%, rgba(131,33,97,0.25) 0%, transparent 70%)", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "12px" }}>
+        <div style={{ backgroundColor: "#1A0E1F", border: "1.5px solid #832161", padding: "10px 14px", textAlign: "center", position: "relative", width: "90px", boxShadow: "0 0 20px rgba(131,33,97,0.2) inset, 0 8px 30px rgba(0,0,0,0.7)" }}>
+          <div style={{ position: "absolute", top: "4px", left: "4px", width: "6px", height: "6px", borderTop: "1px solid #832161", borderLeft: "1px solid #832161", opacity: 0.6 }} />
+          <div style={{ position: "absolute", top: "4px", right: "4px", width: "6px", height: "6px", borderTop: "1px solid #832161", borderRight: "1px solid #832161", opacity: 0.6 }} />
+          <div style={{ position: "absolute", bottom: "4px", left: "4px", width: "6px", height: "6px", borderBottom: "1px solid #832161", borderLeft: "1px solid #832161", opacity: 0.6 }} />
+          <div style={{ position: "absolute", bottom: "4px", right: "4px", width: "6px", height: "6px", borderBottom: "1px solid #832161", borderRight: "1px solid #832161", opacity: 0.6 }} />
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: "4.5px", color: "#832161", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "5px", opacity: 0.7 }}>Suit of Almost</div>
+          <div style={{ fontSize: "20px", color: "#832161", lineHeight: 1, marginBottom: "5px", filter: "drop-shadow(0 0 6px #83216166)" }}>◑</div>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: "6.5px", color: "#F0E8F4", letterSpacing: "0.05em", marginBottom: "5px" }}>The Berliner</div>
+          <div style={{ display: "flex", alignItems: "center", gap: "3px" }}>
+            <div style={{ flex: 1, height: "0.5px", backgroundColor: "#832161", opacity: 0.4 }} />
+            <span style={{ fontSize: "4px", color: "#832161", opacity: 0.6 }}>◆</span>
+            <div style={{ flex: 1, height: "0.5px", backgroundColor: "#832161", opacity: 0.4 }} />
+          </div>
+        </div>
       </div>
     ),
   },
@@ -132,7 +151,7 @@ export default function TemplatePicker() {
               key={t.key}
               onClick={() => pick(t.key)}
               style={{ background: "#BCD2EE", border: "none", padding: 0, cursor: "pointer", textAlign: "left", display: "flex", flexDirection: "column" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = "#EDE7DC"; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = "#A8C3DF"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = "#BCD2EE"; }}
             >
               {/* Preview */}
