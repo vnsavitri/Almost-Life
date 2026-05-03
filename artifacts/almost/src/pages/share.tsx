@@ -79,7 +79,7 @@ export default function Share() {
 
         {/* Quote */}
         {payload.q && (
-          <blockquote style={{ borderLeft: "2px solid rgba(224,120,86,0.4)", paddingLeft: "1rem", marginBottom: "3rem" }}>
+          <blockquote style={{ borderLeft: "2px solid rgba(131,33,97,0.5)", paddingLeft: "1rem", marginBottom: "3rem" }}>
             <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.9375rem", color: "#BCD2EE", opacity: 0.6, lineHeight: 1.5 }}>
               "{payload.q}"
             </p>
