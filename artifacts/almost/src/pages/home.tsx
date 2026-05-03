@@ -1,6 +1,14 @@
-import { Link } from "wouter";
+import { useLocation } from "wouter";
+import { clearSession } from "@/lib/session";
 
 export default function Home() {
+  const [, navigate] = useLocation();
+
+  function handleBegin() {
+    clearSession();
+    navigate("/upload");
+  }
+
   return (
     <main
       style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A" }}
@@ -42,26 +50,25 @@ export default function Home() {
           the life you didn't quite live
         </p>
 
-        <Link href="/upload">
-          <button
-            style={{
-              backgroundColor: "#1A1A1A",
-              color: "#F5EFE6",
-              fontFamily: "'Inter', sans-serif",
-              fontSize: "0.875rem",
-              fontWeight: 500,
-              letterSpacing: "0.05em",
-              padding: "0.875rem 2.5rem",
-              border: "none",
-              cursor: "pointer",
-              transition: "background-color 0.2s ease",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#E07856")}
-            onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#1A1A1A")}
-          >
-            Begin →
-          </button>
-        </Link>
+        <button
+          onClick={handleBegin}
+          style={{
+            backgroundColor: "#1A1A1A",
+            color: "#F5EFE6",
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "0.875rem",
+            fontWeight: 500,
+            letterSpacing: "0.05em",
+            padding: "0.875rem 2.5rem",
+            border: "none",
+            cursor: "pointer",
+            transition: "background-color 0.2s ease",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#E07856")}
+          onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#1A1A1A")}
+        >
+          Begin →
+        </button>
       </div>
 
       <footer
