@@ -6,6 +6,7 @@ import TemplatePicker from "@/pages/template-picker";
 import Loading from "@/pages/loading";
 import Result from "@/pages/result";
 import Share from "@/pages/share";
+import About from "@/pages/about";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/loading" component={Loading} />
       <Route path="/result" component={Result} />
       <Route path="/share" component={Share} />
+      <Route path="/about" component={About} />
       <Route component={NotFound} />
     </Switch>
   );
