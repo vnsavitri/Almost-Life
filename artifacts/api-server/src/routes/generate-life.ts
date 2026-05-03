@@ -1,6 +1,7 @@
 import { Router } from "express";
-import Anthropic from "@anthropic-ai/sdk";
+import { openrouter } from "@workspace/integrations-openrouter-ai";
 import { rateLimitGenerations } from "../middlewares/rate-limit";
+import pdfParse from "pdf-parse";
 
 const router = Router();
 
@@ -149,13 +150,23 @@ router.post("/generate-life", rateLimitGenerations, async (req, res) => {
     return;
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    res.status(500).json({ error: "ANTHROPIC_API_KEY not configured" });
+  let profileText = "";
+  if (demo) {
+    profileText = ZELDA_PROFILE_TEXT;
+  } else if (pdf_b64) {
+    try {
+      const buffer = Buffer.from(pdf_b64, "base64");
+      const parsed = await pdfParse(buffer);
+      profileText = parsed.text;
+    } catch (err) {
+      req.log.error({ err }, "Failed to parse PDF");
+      res.status(400).json({ error: "Could not read PDF. Make sure it's a valid LinkedIn export." });
+      return;
+    }
+  } else {
+    res.status(400).json({ error: "pdf_b64 or demo is required" });
     return;
   }
-
-  const client = new Anthropic({ apiKey });
 
   const systemPrompt = `You're writing the parallel-universe version of someone's life. They made a real choice at a fork point. You're describing the version where they made the OTHER choice.
 
@@ -166,42 +177,33 @@ Output ONLY a JSON object — no preamble, no markdown. Use this exact schema:
 
 ${schema}`;
 
-  const userText = `Fork point: ${branch.framing}
+  const userMessage = `Profile:
+${profileText}
+
+Fork point: ${branch.framing}
 Context: ${branch.context}
 Year: ${branch.year}
 
 Generate the parallel life for this person based on the profile above.`;
 
-  type ContentBlock = Anthropic.TextBlockParam | Anthropic.DocumentBlockParam;
-  const content: ContentBlock[] = [];
-
-  if (demo) {
-    content.push({ type: "text", text: ZELDA_PROFILE_TEXT });
-  } else if (pdf_b64) {
-    content.push({
-      type: "document",
-      source: { type: "base64", media_type: "application/pdf", data: pdf_b64 },
-    } as Anthropic.DocumentBlockParam);
-  }
-
-  content.push({ type: "text", text: userText });
-
-  const message = await client.messages.create({
-    model: "claude-3-5-haiku-20241022",
-    max_tokens: 2048,
-    system: systemPrompt,
-    messages: [{ role: "user", content }],
+  const response = await openrouter.chat.completions.create({
+    model: "anthropic/claude-haiku-4.5",
+    max_tokens: 8192,
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userMessage },
+    ],
   });
 
-  const raw = message.content[0].type === "text" ? message.content[0].text : "";
+  const raw = response.choices[0]?.message?.content ?? "";
 
   let lifeData;
   try {
     const cleaned = raw.replace(/```json|```/g, "").trim();
     lifeData = JSON.parse(cleaned);
   } catch {
-    req.log.error({ raw }, "Failed to parse Claude generate-life response");
-    res.status(500).json({ error: "Failed to parse Claude response", raw });
+    req.log.error({ raw }, "Failed to parse OpenRouter generate-life response");
+    res.status(500).json({ error: "Failed to parse model response", raw });
     return;
   }
 

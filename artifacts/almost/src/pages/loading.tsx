@@ -67,13 +67,21 @@ export default function Loading() {
             const err = await r.json().catch(() => ({})) as { reset_in_hours?: number };
             sessionStorage.setItem("almost_rate_limited", JSON.stringify({ reset_in_hours: err.reset_in_hours ?? 24 }));
             navigate("/result");
-            return;
+            return null;
           }
-          if (!r.ok) throw new Error("failed");
+          if (!r.ok) {
+            sessionStorage.setItem("almost_gen_error", "failed");
+            navigate("/result");
+            return null;
+          }
           return r.json();
         })
-        .then(data => { if (data?.life) sessionStorage.setItem("almost_life_result", JSON.stringify(data.life)); if (data) navigate("/result"); })
-        .catch(() => navigate("/result"));
+        .then(data => {
+          if (data === null || data === undefined) return;
+          if (data?.life) sessionStorage.setItem("almost_life_result", JSON.stringify(data.life));
+          navigate("/result");
+        })
+        .catch(() => { sessionStorage.setItem("almost_gen_error", "failed"); navigate("/result"); });
     }
 
     const bail = setTimeout(() => navigate("/result"), 27000);

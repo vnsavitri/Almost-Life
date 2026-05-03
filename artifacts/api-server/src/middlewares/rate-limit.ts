@@ -28,10 +28,6 @@ export function getRemaining(ip: string): { used: number; remaining: number; res
 }
 
 export function rateLimitGenerations(req: Request, res: Response, next: NextFunction): void {
-  // Skip rate limit for demo requests — they don't call Claude
-  const body = req.body as { demo?: boolean };
-  if (body?.demo) { next(); return; }
-
   const forwarded = req.headers["x-forwarded-for"];
   const ip = (Array.isArray(forwarded) ? forwarded[0] : forwarded?.split(",")[0].trim())
     ?? req.socket.remoteAddress
