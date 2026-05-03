@@ -15,22 +15,28 @@ Your job: identify 3 to 5 inflection points from their actual history. Each one 
 - The job they stayed in longer than expected
 - The company they left right before/after a big event
 
-Return ONLY a JSON array. No preamble. No markdown. Format:
-[
-  {
-    "id": "1",
-    "year": "2014",
-    "framing": "You sold the Berlin studio and moved to Sydney. What if you hadn't?",
-    "context": "Brief one-line context for the model later"
-  }
-]
+Return ONLY a JSON object. No preamble. No markdown. Format:
+{
+  "name": "First Last (exactly as it appears on the profile)",
+  "branches": [
+    {
+      "id": "1",
+      "year": "2014",
+      "framing": "You sold the Berlin studio and moved to Sydney. What if you hadn't?",
+      "context": "Brief one-line context for the model later"
+    }
+  ]
+}
 
 Rules:
+- "name" must be the person's real full name from the profile
 - "framing" must be in second person ("You did X")
 - "framing" must be specific to their actual life — never generic
 - Don't invent details. If their LinkedIn doesn't say why they moved, don't speculate in the framing
 - Tone: dry, knowing, slightly amused — like a smart friend who's noticed something
 - Return between 3 and 5 branches, ranked by how interesting the fork is`;
+
+const ZELDA_DEMO_NAME = "Zelda Hyrule";
 
 const ZELDA_DEMO_BRANCHES = [
   {
@@ -63,7 +69,7 @@ router.post("/extract-branches", async (req, res) => {
   const { pdf_b64, demo } = req.body as { pdf_b64?: string; demo?: boolean };
 
   if (demo) {
-    res.json({ branches: ZELDA_DEMO_BRANCHES });
+    res.json({ name: ZELDA_DEMO_NAME, branches: ZELDA_DEMO_BRANCHES });
     return;
   }
 
@@ -97,17 +103,17 @@ router.post("/extract-branches", async (req, res) => {
 
   const raw = response.choices[0]?.message?.content ?? "";
 
-  let branches;
+  let parsed: { name?: string; branches?: unknown[] };
   try {
     const cleaned = raw.replace(/```json|```/g, "").trim();
-    branches = JSON.parse(cleaned);
+    parsed = JSON.parse(cleaned);
   } catch {
     req.log.error({ raw }, "Failed to parse OpenRouter extract-branches response");
     res.status(500).json({ error: "Failed to parse response from model", raw });
     return;
   }
 
-  res.json({ branches });
+  res.json({ name: parsed.name ?? "You", branches: parsed.branches ?? [] });
 });
 
 export default router;

@@ -27,7 +27,12 @@ export default function Branches() {
       body: JSON.stringify(isDemo ? { demo: true } : { pdf_b64: pdfB64 }),
     })
       .then(r => { if (!r.ok) return r.json().then(d => Promise.reject(d.error || "Server error")); return r.json(); })
-      .then(data => { setBranches(data.branches); sessionStorage.setItem("almost_all_branches", JSON.stringify(data.branches)); setLoading(false); })
+      .then(data => {
+        setBranches(data.branches);
+        sessionStorage.setItem("almost_all_branches", JSON.stringify(data.branches));
+        if (data.name) sessionStorage.setItem("almost_user_name", data.name);
+        setLoading(false);
+      })
       .catch(err => { setError(typeof err === "string" ? err : "Something went wrong."); setLoading(false); });
   }, [navigate]);
 
