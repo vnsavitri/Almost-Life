@@ -105,12 +105,20 @@ export default function Admin() {
               Stats
             </h1>
           </div>
-          <button
-            onClick={() => { sessionStorage.removeItem(SESSION_KEY); setAuthed(false); setStats(null); }}
-            style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", background: "none", border: "none", color: "#BCD2EE", opacity: 0.2, cursor: "pointer" }}
-          >
-            Sign out
-          </button>
+          <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
+            <button
+              onClick={() => { const pw = sessionStorage.getItem(SESSION_KEY); if (pw) fetchStats(pw); }}
+              style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", background: "none", border: "none", color: "#BCD2EE", opacity: loading ? 0.15 : 0.4, cursor: "pointer" }}
+            >
+              {loading ? "Refreshing..." : "↻ Refresh"}
+            </button>
+            <button
+              onClick={() => { sessionStorage.removeItem(SESSION_KEY); setAuthed(false); setStats(null); }}
+              style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", background: "none", border: "none", color: "#BCD2EE", opacity: 0.2, cursor: "pointer" }}
+            >
+              Sign out
+            </button>
+          </div>
         </div>
 
         {/* Big numbers */}
