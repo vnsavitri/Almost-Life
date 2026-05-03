@@ -28,6 +28,8 @@ export function getRemaining(ip: string): { used: number; remaining: number; res
 }
 
 export function rateLimitGenerations(req: Request, res: Response, next: NextFunction): void {
+  if (process.env.DISABLE_RATE_LIMIT === "true") { next(); return; }
+
   const forwarded = req.headers["x-forwarded-for"];
   const ip = (Array.isArray(forwarded) ? forwarded[0] : forwarded?.split(",")[0].trim())
     ?? req.socket.remoteAddress
