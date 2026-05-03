@@ -3,6 +3,12 @@ import { clearSession } from "@/lib/session";
 
 const GHOST_YEARS = ["1994", "2001", "2008", "2013", "2019"];
 
+const ease = "cubic-bezier(0.16, 1, 0.3, 1)";
+
+function anim(name: string, duration: string, delay: string, extra = "") {
+  return `${name} ${duration} ${ease} ${delay} both${extra ? " " + extra : ""}`;
+}
+
 export default function Home() {
   const [, navigate] = useLocation();
 
@@ -14,8 +20,8 @@ export default function Home() {
   return (
     <main className="grain" style={{ backgroundColor: "#BCD2EE", color: "#52050A", minHeight: "100vh", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
 
-      {/* Ghost years — background texture */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
+      {/* Ghost years — drift in as background texture */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden", animation: anim("home-fade", "1.6s", "60ms") }}>
         {GHOST_YEARS.map((yr, i) => (
           <span key={yr} style={{
             position: "absolute",
@@ -30,12 +36,18 @@ export default function Home() {
             left: `${-2 + i * 22}%`,
             lineHeight: 1,
             whiteSpace: "nowrap",
+            animation: anim("home-drift", "1.4s", `${i * 80}ms`),
           }}>{yr}</span>
         ))}
       </div>
 
       {/* Top bar */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 2rem", borderBottom: "1px solid rgba(82,5,10,0.06)", position: "relative", zIndex: 1 }}>
+      <div style={{
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        padding: "1.25rem 2rem", borderBottom: "1px solid rgba(82,5,10,0.06)",
+        position: "relative", zIndex: 1,
+        animation: anim("home-drop", "0.9s", "0ms"),
+      }}>
         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#52050A", opacity: 0.5 }}>
           A Thought Experiment
         </span>
@@ -52,8 +64,8 @@ export default function Home() {
       {/* Main content */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 2rem", position: "relative", zIndex: 1 }}>
 
-        {/* Logotype */}
-        <div style={{ marginBottom: "2rem" }}>
+        {/* Logotype + tagline — the hero rise */}
+        <div style={{ marginBottom: "2rem", animation: anim("home-rise", "1.1s", "100ms") }}>
           <h1 style={{
             fontFamily: "'Fraunces', Georgia, serif",
             fontSize: "clamp(5.5rem, 20vw, 14rem)",
@@ -82,11 +94,18 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Ruled divider */}
-        <div style={{ width: "3rem", height: "1px", backgroundColor: "#832161", opacity: 0.5, marginBottom: "2.5rem" }} />
+        {/* Ruled divider — expands left to right */}
+        <div style={{
+          width: "3rem",
+          height: "1px",
+          backgroundColor: "#832161",
+          marginBottom: "2.5rem",
+          transformOrigin: "left center",
+          animation: anim("home-rule", "0.9s", "360ms"),
+        }} />
 
-        {/* Begin */}
-        <div style={{ display: "flex", alignItems: "center", gap: "3rem" }}>
+        {/* Begin CTA */}
+        <div style={{ display: "flex", alignItems: "center", gap: "3rem", animation: anim("home-rise", "0.9s", "460ms") }}>
           <button
             onClick={handleBegin}
             style={{
@@ -124,7 +143,12 @@ export default function Home() {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", padding: "1.25rem 2rem", borderTop: "1px solid rgba(82,5,10,0.12)", position: "relative", zIndex: 1 }}>
+      <div style={{
+        display: "flex", justifyContent: "space-between", alignItems: "flex-end",
+        padding: "1.25rem 2rem", borderTop: "1px solid rgba(82,5,10,0.12)",
+        position: "relative", zIndex: 1,
+        animation: anim("home-fade", "1s", "560ms"),
+      }}>
         <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontWeight: 300, fontSize: "0.75rem", letterSpacing: "0.01em", color: "#52050A", opacity: 0.55, maxWidth: "36ch", lineHeight: 1.6 }}>
           Upload your LinkedIn. Pick a fork in the road. See the other version of you.
         </p>

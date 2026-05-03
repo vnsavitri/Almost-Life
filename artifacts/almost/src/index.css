@@ -130,6 +130,28 @@
 }
 .ruled-action:hover { opacity: 1; }
 
+/* Home page entrance animations */
+@keyframes home-rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes home-drop {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes home-drift {
+  from { opacity: 0; transform: translateX(16px) translateY(8px); }
+  to   { opacity: 1; transform: translateX(0) translateY(0); }
+}
+@keyframes home-rule {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 0.5; }
+}
+@keyframes home-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /* Template picker cards */
 .template-card {
   background: #BCD2EE;
