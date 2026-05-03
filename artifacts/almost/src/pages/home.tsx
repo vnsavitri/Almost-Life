@@ -1,7 +1,7 @@
 import { useLocation } from "wouter";
 import { clearSession } from "@/lib/session";
 
-const GHOST_YEARS = ["1994", "2001", "2008", "2013", "2019"];
+const GHOST_YEARS = ["1994", "2005", "2013", "2021", "2026"];
 
 const ease = "cubic-bezier(0.16, 1, 0.3, 1)";
 
@@ -21,22 +21,22 @@ export default function Home() {
     <main className="grain" style={{ backgroundColor: "#BCD2EE", color: "#52050A", minHeight: "100vh", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
 
       {/* Ghost years — drift in as background texture */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden", animation: anim("home-fade", "1.6s", "60ms") }}>
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden", animation: anim("home-fade", "1.8s", "40ms") }}>
         {GHOST_YEARS.map((yr, i) => (
           <span key={yr} style={{
             position: "absolute",
-            fontFamily: "'Fraunces', Georgia, serif",
-            fontWeight: 200,
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: 100,
             fontSize: "clamp(5rem, 18vw, 14rem)",
             color: "#52050A",
-            opacity: 0.025 + i * 0.008,
-            letterSpacing: "-0.03em",
+            opacity: 0.04 + i * 0.012,
+            letterSpacing: "-0.04em",
             userSelect: "none",
             top: `${8 + i * 17}%`,
             left: `${-2 + i * 22}%`,
             lineHeight: 1,
             whiteSpace: "nowrap",
-            animation: anim("home-drift", "1.4s", `${i * 80}ms`),
+            animation: anim("home-drift-transform", "1.6s", `${i * 90}ms`),
           }}>{yr}</span>
         ))}
       </div>
