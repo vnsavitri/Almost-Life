@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useLocation } from "wouter";
 import { clearSession } from "@/lib/session";
 import StepProgress from "@/components/StepProgress";
@@ -16,7 +16,15 @@ export default function Upload() {
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [instructionsOpen, setInstructionsOpen] = useState(false);
+  const [remaining, setRemaining] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    fetch("/api/generations-remaining")
+      .then(r => r.json())
+      .then((d: { remaining: number }) => setRemaining(d.remaining))
+      .catch(() => {});
+  }, []);
 
   const processFile = useCallback((file: File) => {
     setError(null);
@@ -82,6 +90,13 @@ export default function Upload() {
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", color: "#52050A", opacity: 0.2, letterSpacing: "0.04em", marginTop: instructionsOpen ? "1rem" : 0 }}>
               Your file is never stored. Processed once, then gone.
             </p>
+            {remaining !== null && (
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: remaining === 0 ? "#832161" : "#52050A", opacity: remaining === 0 ? 0.6 : 0.25, marginTop: "0.5rem" }}>
+                {remaining === 0
+                  ? "No generations remaining today"
+                  : `${remaining} of 3 generation${remaining === 1 ? "" : "s"} remaining today`}
+              </p>
+            )}
           </div>
         </div>
 

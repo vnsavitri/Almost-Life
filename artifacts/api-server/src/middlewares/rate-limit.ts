@@ -15,6 +15,18 @@ setInterval(() => {
   }
 }, 60 * 60 * 1000);
 
+export function getRemaining(ip: string): { used: number; remaining: number; reset_in_hours: number } {
+  const now = Date.now();
+  const cutoff = now - WINDOW_MS;
+  const timestamps = (ipStore.get(ip) ?? []).filter(t => t > cutoff);
+  const used = timestamps.length;
+  const remaining = Math.max(0, MAX_REQUESTS - used);
+  const oldest = timestamps.length > 0 ? Math.min(...timestamps) : now;
+  const resetInMs = used >= MAX_REQUESTS ? oldest + WINDOW_MS - now : WINDOW_MS;
+  const reset_in_hours = Math.ceil(resetInMs / (1000 * 60 * 60));
+  return { used, remaining, reset_in_hours };
+}
+
 export function rateLimitGenerations(req: Request, res: Response, next: NextFunction): void {
   // Skip rate limit for demo requests — they don't call Claude
   const body = req.body as { demo?: boolean };
