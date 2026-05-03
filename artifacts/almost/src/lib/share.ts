@@ -73,5 +73,5 @@ export function linkedInShareUrl(payload: SharePayload, shareUrl: string): strin
 }
 
 export function discordText(payload: SharePayload, shareUrl: string): string {
-  return `I found the life I almost lived ✦\n\n**${payload.y}:** "${payload.fs}"\nOther me: **${payload.ar}** in **${payload.al}**\n\n→ ${shareUrl}`;
+  return `I found the life I almost lived ✦\n\n**${payload.y}:** "${payload.fs}"\nOther me: **${payload.ar}** in **${payload.al}**\n\n→ ${shareUrl}\n\n*made by <@809547640739856424>*`;
 }
