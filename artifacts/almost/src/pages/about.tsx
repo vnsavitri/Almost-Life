@@ -105,7 +105,7 @@ export default function About() {
           {[
             { t: "Nothing is stored.", b: "Your PDF is read once, in memory, then discarded. We don't keep it, log it, or look at it." },
             { t: "No account needed.", b: "No login. No tracking. No newsletter you didn't sign up for. Just the thought experiment." },
-            { t: "Powered by Claude.", b: "Generation runs through Anthropic's API. Your data is subject to their standard usage policy — which is to say, not used for training without consent." },
+            { t: "Powered by OpenRouter.", b: "Generation runs through OpenRouter's API. Your data is subject to their standard usage policy, which is to say, not used for training without consent." },
           ].map(item => (
             <div key={item.t} style={{ borderTop: "1px solid rgba(82,5,10,0.08)", paddingTop: "1.25rem" }}>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", letterSpacing: "0.04em", color: "#52050A", opacity: 0.6, marginBottom: "0.4rem" }}>{item.t}</p>
@@ -183,7 +183,7 @@ export default function About() {
         <div style={{ textAlign: "right" }}>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#52050A", opacity: 0.2, lineHeight: 2 }}>
             Built for the Replit 10 Buildathon<br />
-            Powered by Claude · Vol. I
+            Vol. I
           </p>
         </div>
       </div>
