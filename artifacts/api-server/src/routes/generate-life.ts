@@ -48,9 +48,7 @@ Royal Academy of Hyrule
 BSc Ancient Studies & Applied Prophecy, 2006–2010
 `;
 
-const SYSTEM_PROMPT = `You're writing the parallel-universe version of someone's life. They made a real choice at a fork point. You're describing the version where they made the OTHER choice.
-
-THE VOICE — read carefully:
+const VOICE_RULES = `THE VOICE — read carefully:
 - Funny first, melancholy underneath. Think "I'm almost a lawyer, in another life I went to Yale and now I'm probably divorced but my apartment has a doorman."
 - Confident, specific, slightly unhinged, secretly tender.
 - Dry observational humour. Never twee, never self-pitying.
@@ -60,18 +58,16 @@ THE VOICE — read carefully:
 
 WORDS YOU MUST NEVER USE:
 navigating, tapestry, embark, journey, landscape, ever-evolving, transformative, robust, seamless, leverage, dance of, symphony of, in the realm of, delve, unleash, paradigm.
-If you write any of these, start over.
+If you write any of these, start over.`;
 
-OUTPUT FORMAT:
-Generate a single JSON object with ALL four templates populated. No preamble, no markdown, no explanation — only the JSON.
-
-{
+const TEMPLATE_SCHEMAS: Record<string, string> = {
+  linkedin_ghost: `{
   "name": "their real name from the profile, or 'You' if unclear",
   "alt_location": "where Other You lives now",
   "alt_role": "what Other You does for work",
-  "alt_age": "their current age, estimate from graduation/start dates if needed",
+  "alt_age": "current age estimate",
   "year_of_fork": "the year of the fork",
-  "fork_summary": "one-line summary of the road not taken",
+  "fork_summary": "one sharp sentence: the road not taken",
   "linkedin_ghost": {
     "headline": "Other You's LinkedIn headline — slightly cringe in the way LinkedIn headlines are, 80 chars max",
     "about_section": "120 words, first person, LinkedIn voice — slightly try-hard, occasionally vulnerable. Must include one specific detail.",
@@ -80,7 +76,15 @@ Generate a single JSON object with ALL four templates populated. No preamble, no
     ],
     "linkedin_post": "60 words. Should make the reader cringe a little but also feel something. End with a banal hashtag.",
     "connection_count": "a believable number like '2,847'"
-  },
+  }
+}`,
+  wiki_stub: `{
+  "name": "their real name from the profile, or 'You' if unclear",
+  "alt_location": "where Other You lives now",
+  "alt_role": "what Other You does for work",
+  "alt_age": "current age estimate",
+  "year_of_fork": "the year of the fork",
+  "fork_summary": "one sharp sentence: the road not taken",
   "wiki_stub": {
     "infobox_birthplace": "...",
     "infobox_known_for": "1-2 phrases",
@@ -91,14 +95,30 @@ Generate a single JSON object with ALL four templates populated. No preamble, no
     "career": "100 words, formal Wikipedia voice, include 2 fake citations like [3]",
     "controversies": "60 words, minor funny scandal, at least one [citation needed]",
     "personal_life": "40 words, one delightfully mundane fact"
-  },
+  }
+}`,
+  museum_plaque: `{
+  "name": "their real name from the profile, or 'You' if unclear",
+  "alt_location": "where Other You lives now",
+  "alt_role": "what Other You does for work",
+  "alt_age": "current age estimate",
+  "year_of_fork": "the year of the fork",
+  "fork_summary": "one sharp sentence: the road not taken",
   "museum_plaque": {
     "title": "poetic short title like 'Parallel Life No. 3' or 'Study in Berlin Light'",
     "medium": "playful medium line like 'oil on regret, 2014–present'",
     "provenance": "locations and years, max 4 entries, formatted as 'City, Year — City, Year'",
     "description": "EXACTLY 80 words. Restrained, third person, slightly distant — like a museum description. The melancholy lives in what's left out.",
     "loan_credit": "On loan from the year [year]"
-  },
+  }
+}`,
+  tarot_card: `{
+  "name": "their real name from the profile, or 'You' if unclear",
+  "alt_location": "where Other You lives now",
+  "alt_role": "what Other You does for work",
+  "alt_age": "current age estimate",
+  "year_of_fork": "the year of the fork",
+  "fork_summary": "one sharp sentence: the road not taken",
   "tarot_card": {
     "card_name": "The [Something] — like 'The Founder Reversed' or 'The Berliner'",
     "suit": "one of: Ambition, Distance, Almost, Devotion",
@@ -106,17 +126,25 @@ Generate a single JSON object with ALL four templates populated. No preamble, no
     "reversed_meaning": "30 words — what it means reversed",
     "prophecy": "60 words — second person, slightly mystical, slightly sarcastic. Feels like a fortune cookie that got therapy."
   }
-}`;
+}`,
+};
 
 router.post("/generate-life", async (req, res) => {
-  const { branch, demo, pdf_b64 } = req.body as {
+  const { branch, demo, pdf_b64, template_type = "linkedin_ghost" } = req.body as {
     branch: { year: string; framing: string; context: string };
     demo?: boolean;
     pdf_b64?: string;
+    template_type?: string;
   };
 
   if (!branch) {
     res.status(400).json({ error: "branch is required" });
+    return;
+  }
+
+  const schema = TEMPLATE_SCHEMAS[template_type];
+  if (!schema) {
+    res.status(400).json({ error: `Unknown template_type: ${template_type}` });
     return;
   }
 
@@ -127,6 +155,15 @@ router.post("/generate-life", async (req, res) => {
   }
 
   const client = new Anthropic({ apiKey });
+
+  const systemPrompt = `You're writing the parallel-universe version of someone's life. They made a real choice at a fork point. You're describing the version where they made the OTHER choice.
+
+${VOICE_RULES}
+
+OUTPUT FORMAT:
+Output ONLY a JSON object — no preamble, no markdown. Use this exact schema:
+
+${schema}`;
 
   const userText = `Fork point: ${branch.framing}
 Context: ${branch.context}
@@ -150,8 +187,8 @@ Generate the parallel life for this person based on the profile above.`;
 
   const message = await client.messages.create({
     model: "claude-sonnet-4-5",
-    max_tokens: 4096,
-    system: SYSTEM_PROMPT,
+    max_tokens: 2048,
+    system: systemPrompt,
     messages: [{ role: "user", content }],
   });
 
