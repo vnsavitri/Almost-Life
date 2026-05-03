@@ -2,6 +2,8 @@ import { Router } from "express";
 import { openrouter } from "@workspace/integrations-openrouter-ai";
 import { rateLimitGenerations } from "../middlewares/rate-limit";
 import pdfParse from "pdf-parse";
+import { createHash } from "crypto";
+import { db, generationsTable } from "@workspace/db";
 
 const router = Router();
 
@@ -208,6 +210,12 @@ Generate the parallel life for this person based on the profile above.`;
   }
 
   res.json({ life: lifeData });
+
+  // Fire-and-forget: record generation for admin stats
+  const forwarded = req.headers["x-forwarded-for"];
+  const ip = (Array.isArray(forwarded) ? forwarded[0] : forwarded?.split(",")[0].trim()) ?? req.socket.remoteAddress ?? "unknown";
+  const ipHash = createHash("sha256").update(ip).digest("hex");
+  db.insert(generationsTable).values({ templateType: template_type, isDemo: Boolean(demo), ipHash }).catch(() => {});
 });
 
 export default router;

@@ -7,6 +7,7 @@ import Loading from "@/pages/loading";
 import Result from "@/pages/result";
 import Share from "@/pages/share";
 import About from "@/pages/about";
+import Admin from "@/pages/admin";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/result" component={Result} />
       <Route path="/share" component={Share} />
       <Route path="/about" component={About} />
+      <Route path="/admin" component={Admin} />
       <Route component={NotFound} />
     </Switch>
   );
