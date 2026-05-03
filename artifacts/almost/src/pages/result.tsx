@@ -177,6 +177,9 @@ export default function Result() {
 
   const ease = "cubic-bezier(0.16, 1, 0.3, 1)";
 
+  const sharePayload = buildSharePayload(data, template);
+  const shareUrl = buildShareUrl(sharePayload);
+
   return (
     <main className="grain" style={{ backgroundColor: "#BCD2EE", color: "#52050A", minHeight: "100vh" }}>
       {shareOpen && <ShareModal data={data} template={template} onClose={() => setShareOpen(false)} />}
@@ -237,9 +240,17 @@ export default function Result() {
             Different format →
           </button>
         </div>
-        <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
+          <a
+            href={xShareUrl(sharePayload, shareUrl)}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.08em", textTransform: "uppercase", backgroundColor: "#000", color: "#fff", padding: "0.5rem 1rem", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}
+          >
+            Post on X →
+          </a>
           <button onClick={() => setShareOpen(true)} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#52050A", opacity: 0.3, background: "none", border: "none", cursor: "pointer" }}>
-            Share ↗
+            More ↗
           </button>
           <button onClick={() => { clearSession(); navigate("/"); }} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#52050A", opacity: 0.2, background: "none", border: "none", cursor: "pointer" }}>
             Start over
