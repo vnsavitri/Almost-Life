@@ -150,9 +150,8 @@ export default function TemplatePicker() {
             <button
               key={t.key}
               onClick={() => pick(t.key)}
-              style={{ background: "#BCD2EE", border: "none", padding: 0, cursor: "pointer", textAlign: "left", display: "flex", flexDirection: "column" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = "#A8C3DF"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = "#BCD2EE"; }}
+              className="template-card"
+              style={{ display: "flex", flexDirection: "column" }}
             >
               {/* Preview */}
               <div style={{ height: "160px", overflow: "hidden", width: "100%", position: "relative" }}>
