@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Almost"
+version = "1.0.0"
+id = "artifacts/almost"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21124
+
+[services.development]
+run = "pnpm --filter @workspace/almost run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/almost", "run", "build" ]
+publicDir = "artifacts/almost/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21124"
+BASE_PATH = "/"

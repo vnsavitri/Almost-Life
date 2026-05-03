@@ -1,0 +1,303 @@
+# PROJECT: Almost — the parallel-life generator
+
+You're helping me build a web app called **Almost** for the Replit 10 Buildathon. I have 24 hours. I'm a designer/PM, not a developer — I'll direct, you build. We're going to do this in PHASES. After each phase you STOP, show me what you've built, and wait for my confirmation before starting the next phase. Do NOT skip ahead. Do NOT build the whole thing at once. If you do, you will break it and we will both be sad.
+
+---
+
+## THE PRODUCT (read this twice before you start)
+
+**What it does:** User uploads their LinkedIn PDF. The app identifies 3-5 inflection points in their career (job changes, country moves, big decisions). User picks one. Claude generates the alternate-universe version of their life from that fork point. Output is a downloadable HTML page in one of four template styles the user picks.
+
+**The vibe:** Funny first, melancholy underneath. Think "I'm *almost* a lawyer, in another life I went to Yale instead of starting that doomed startup, and honestly, I'm probably divorced now but I have a very good apartment." Confident, specific, slightly unhinged, secretly tender. NOT sad-boy poetry. NOT generic horoscope crap. NOT AI-tells like "navigating," "tapestry," "embarking on a journey," "in the dance of life." If the output sounds like ChatGPT, it has failed.
+
+**The four templates:**
+1. **LinkedIn Ghost** — uncanny-valley LinkedIn profile of Other You. Job history, headline, "Open to work" badge, one cringe LinkedIn post.
+2. **The Wiki Stub** — Wikipedia-styled page with infobox, sections, fake citations, and a "Controversies" section.
+3. **Museum Plaque** — minimalist gallery wall card. Cream background, 80 words max, restraint as design.
+4. **The Tarot Card** — single illustrated card (CSS art, no image gen), suit name, reversed/upright meaning, prophetic short text.
+
+**Monetisation:** RevenueCat paywall. Free = 1 life, 2 templates. Pro ($6/mo) = unlimited lives, all 4 templates, hosted public link.
+
+---
+
+## TECH STACK (use these, don't substitute)
+
+- **Framework:** Next.js 14 (App Router) + TypeScript + Tailwind CSS
+- **AI:** Anthropic Claude API (claude-sonnet-4 model). I'll provide the API key as an env var ANTHROPIC_API_KEY.
+- **PDF parsing:** Just send the raw PDF to Claude using the document content type — Claude reads PDFs natively. Do NOT install pdf-parse or similar libraries. Don't overengineer.
+- **HTML download:** Generate the output as a self-contained HTML string, offer a download button using a Blob.
+- **Payments:** RevenueCat web SDK (stub for now, wire in Phase 6).
+- **Deploy:** Replit's default deployment.
+
+---
+
+## BRAND BASICS
+
+- Name: **Almost**
+- Tagline: "the life you didn't quite live"
+- Color palette: warm cream (#F5EFE6) background, deep ink (#1A1A1A) text, single accent: faded coral (#E07856). No gradients. No shadows. No emoji in the product UI.
+- Typography: Serif for headings (use Fraunces or similar), sans-serif for body (Inter), monospace where called for (template-specific).
+- Voice: dry, knowing, never twee. Short sentences. Confident.
+
+---
+
+# PHASE 1 — Project scaffold ONLY
+
+DO THIS AND STOP:
+
+1. Create a new Next.js 14 project with TypeScript and Tailwind, App Router enabled.
+2. Install dependencies: `@anthropic-ai/sdk`, `clsx`, `lucide-react` (for icons only, no other use).
+3. Set up the env var `ANTHROPIC_API_KEY` in Replit Secrets — leave a placeholder, I'll add the real key.
+4. Create folder structure:
+   - `/app/page.tsx` (landing)
+   - `/app/upload/page.tsx` (upload flow)
+   - `/app/branches/page.tsx` (branch selection)
+   - `/app/loading/page.tsx` (loading animation)
+   - `/app/result/page.tsx` (template choice + output)
+   - `/app/api/extract-branches/route.ts` (API: PDF → branches)
+   - `/app/api/generate-life/route.ts` (API: branch → alt life)
+   - `/components/` (empty for now)
+   - `/lib/prompts.ts` (where I'll store Claude system prompts)
+   - `/lib/templates/` (empty for now, will hold the 4 HTML templates)
+5. Make `/app/page.tsx` a basic landing page with just the brand name "Almost", the tagline, and a single CTA button: "Begin →" linking to `/upload`. Use the brand colors and typography above. Make it look like a real product, not a hackathon entry. Whitespace is your friend.
+
+**STOP HERE.** Show me the landing page. Do not build the upload flow. Do not write the API routes. Do not touch the templates. I want to see the brand land before we go further.
+
+---
+
+# PHASE 2 — Upload flow + onboarding instructions
+
+After I confirm Phase 1:
+
+1. Build `/app/upload/page.tsx`. It contains:
+   - A heading: "Upload your LinkedIn"
+   - A subhead: "We'll find the moments where your life forked. You pick one. We show you the other version."
+   - A collapsible "How to export your LinkedIn PDF" section that expands inline. Inside it, these exact steps:
+     1. Open LinkedIn on desktop and go to your profile
+     2. Click the "More" button under your profile photo
+     3. Choose "Save to PDF"
+     4. Wait a moment, your browser will download the file
+     5. Come back here and drop it below
+   - A drag-and-drop file upload zone, with a fallback "or click to browse" button. Accept .pdf only, max 10MB.
+   - A "Try with a demo profile instead" link below the upload zone — this loads a hardcoded demo (we'll add the demo data in Phase 3).
+   - A tiny privacy line: "We don't store your file. It's processed once and discarded."
+2. On successful upload, store the file in browser state (use Next.js client component + sessionStorage for the PDF as base64) and route to `/app/branches`.
+
+**STOP HERE.** Show me the upload page. I want to see the onboarding copy and the upload zone before you wire anything up to Claude.
+
+---
+
+# PHASE 3 — Branch extraction (the first AI call)
+
+After I confirm Phase 2:
+
+1. Add this to `/lib/prompts.ts`:
+
+```typescript
+export const BRANCH_EXTRACTION_PROMPT = `You're analyzing a LinkedIn profile to find the most interesting "what if" moments — the forks in this person's career where they made a real choice that shaped everything after.
+
+Your job: identify 3 to 5 inflection points from their actual history. Each one must be a REAL decision they made, not a hypothetical. Look for:
+- Job changes that came with a country/city move
+- Industry pivots
+- Times they left something stable for something risky (or vice versa)
+- Education choices
+- Long gaps that suggest a sabbatical or rethink
+- The job they stayed in longer than expected
+- The company they left right before/after a big event
+
+Return ONLY a JSON array. No preamble. No markdown. Format:
+[
+  {
+    "id": "1",
+    "year": "2014",
+    "framing": "You sold the Berlin studio and moved to Sydney. What if you hadn't?",
+    "context": "Brief one-line context for the model later"
+  }
+]
+
+Rules:
+- "framing" must be in second person ("You did X")
+- "framing" must be specific to their actual life — never generic
+- Don't invent details. If their LinkedIn doesn't say why they moved, don't speculate in the framing
+- Tone: dry, knowing, slightly amused — like a smart friend who's noticed something
+- Return between 3 and 5 branches, ranked by how interesting the fork is`;
+```
+
+2. Build `/app/api/extract-branches/route.ts`. It receives the PDF as base64, sends it to Claude using the document content type with the BRANCH_EXTRACTION_PROMPT as system, and returns the JSON.
+
+3. Build `/app/branches/page.tsx`. Reads the PDF from sessionStorage, calls `/api/extract-branches`, displays a loading state, then renders the branches as a vertical list of cards. Each card shows the year (large, serif), the framing (body), and is clickable. When clicked, store the chosen branch + the PDF context in sessionStorage and route to `/loading`.
+
+4. Add the demo data: hardcode a sample profile (we'll use one for Maya, a fictional designer who moved Berlin → Sydney → solo founder). When the user clicks "Try with a demo profile" in Phase 2, route them straight to `/branches` with this hardcoded data so they skip the API call.
+
+**STOP HERE.** Test it with a real LinkedIn PDF. Show me the branch cards. I need to see the framings before we proceed — if they're generic, the prompt needs tuning, and there's no point building further until they land.
+
+---
+
+# PHASE 4 — Loading animation (the parallel universe moment)
+
+After I confirm Phase 3:
+
+Build `/app/loading/page.tsx`. This is a delight moment, not a chore. While the AI generates the alternate life (8-15 seconds), show this animation:
+
+**The animation:**
+- Two horizontal lines stretching across the screen, one above the other, both starting from the same point on the left.
+- The top line is solid, dark ink colour. Label: "this life"
+- The bottom line is dashed, faded coral. Label: "the other one"
+- Small dots travel along each line at the same pace — these are "you" in each timeline.
+- Every 2 seconds, a tiny event marker appears on the lines (a small circle with a tiny serif label like "2014: Berlin", "2017: Sydney", "2020: Hype Studios"). The bottom line shows DIFFERENT markers ("2014: stayed", "2017: married Lukas", "2020: opened the bookshop") — these can be hardcoded fun examples.
+- Below the lines, rotating one-liners every 3 seconds:
+   - "Considering the lives you didn't live..."
+   - "Calculating the apartment you didn't rent..."
+   - "Reviewing the breakup you didn't have..."
+   - "Auditing your unwritten LinkedIn posts..."
+   - "Cross-referencing your parallel divorces..."
+
+Pure CSS animation. No images. Use keyframes for the dot travel and fade-in for markers. Should feel light and a bit funny, not serious.
+
+While this plays, the page is also calling `/api/generate-life` (which we'll build in Phase 5). When the response comes back, route to `/result`.
+
+**STOP HERE.** Show me the loading animation in isolation (use a 10-second setTimeout to simulate the API call). I want to see if it's charming before we wire it to the real call.
+
+---
+
+# PHASE 5 — The life generation (the main AI call)
+
+After I confirm Phase 4:
+
+1. Add this to `/lib/prompts.ts`:
+
+```typescript
+export const LIFE_GENERATION_PROMPT = `You're writing the parallel-universe version of someone's life. They made a real choice at a fork point. You're describing the version where they made the OTHER choice.
+
+THE VOICE — read carefully:
+- Funny first, melancholy underneath. Think "I'm almost a lawyer, in another life I went to Yale and now I'm probably divorced but my apartment has a doorman."
+- Confident, specific, slightly unhinged, secretly tender.
+- Dry observational humour. Never twee, never self-pitying.
+- Short sentences. Mixed lengths. Active voice.
+- Specifics over generics. "She drinks her coffee black now" not "she has changed."
+- Allowed to be funny about uncomfortable things (divorce, failure, regret) without being mean.
+
+WORDS YOU MUST NEVER USE:
+navigating, tapestry, embark, journey, landscape, ever-evolving, transformative, robust, seamless, leverage, dance of, symphony of, in the realm of, delve, unleash, paradigm.
+If you write any of these, start over.
+
+WHAT TO PRODUCE:
+You'll receive: the user's LinkedIn context, the chosen fork point, and a TEMPLATE TYPE. The template type determines length and structure. Output ONLY a JSON object — no preamble, no markdown.
+
+For ALL templates, populate these core fields based on the fork:
+{
+  "name": "their real name from LinkedIn, or 'You' if unclear",
+  "alt_location": "where Other You lives now",
+  "alt_role": "what Other You does",
+  "alt_age": "their current age",
+  "year_of_fork": "the year they made the choice",
+  "fork_summary": "one-line summary of the choice they didn't make"
+}
+
+Then add template-specific fields based on TEMPLATE_TYPE:
+
+If TEMPLATE_TYPE = "linkedin_ghost":
+{
+  "headline": "the LinkedIn headline of Other You — make it slightly cringe in the way LinkedIn headlines are. 80 chars max.",
+  "about_section": "Other You's About section, 120 words, written in first person, in the LinkedIn voice (slightly try-hard, occasionally vulnerable). Must include one specific detail about a project or moment.",
+  "experience": [
+    { "title": "...", "company": "...", "duration": "...", "blurb": "one-sentence description, LinkedIn-flavoured" }
+    // 3 entries, most recent first
+  ],
+  "linkedin_post": "A single LinkedIn post Other You wrote recently. 60 words. Should make the reader cringe a little but also feel something. End with a banal hashtag.",
+  "connection_count": "a believable number like '2,847'"
+}
+
+If TEMPLATE_TYPE = "wiki_stub":
+{
+  "infobox_birthplace": "...",
+  "infobox_known_for": "1-2 phrases",
+  "infobox_occupation": "...",
+  "infobox_spouse": "made-up name, optional, can be 'unknown'",
+  "lead_paragraph": "Wikipedia-style opening, 80 words, formal tone, includes [citation needed] markers in 2-3 places",
+  "early_life": "60 words, formal Wikipedia voice",
+  "career": "100 words, formal Wikipedia voice, includes 2 fake citations like '[3]'",
+  "controversies": "60 words about a minor scandal Other You was involved in. Funny but specific. Has at least one [citation needed].",
+  "personal_life": "40 words, includes one delightfully mundane fact"
+}
+
+If TEMPLATE_TYPE = "museum_plaque":
+{
+  "title": "Title of the work — should be poetic and short, like 'Parallel Life No. 3' or 'Study in Berlin Light'",
+  "medium": "Mixed media line — playful, like 'oil on regret, 2014–present'",
+  "provenance": "Where Other You has been, formatted as a list of locations and years, max 4 entries",
+  "description": "80 words EXACTLY. Restrained, third person, slightly distant — like a museum description. The melancholy lives in what's left out.",
+  "loan_credit": "On loan from the year ____ (a year)"
+}
+
+If TEMPLATE_TYPE = "tarot_card":
+{
+  "card_name": "The [Something] — like 'The Founder Reversed' or 'The Berliner'",
+  "suit": "one of: Ambition, Distance, Almost, Devotion",
+  "upright_meaning": "30 words — what this card means when drawn",
+  "reversed_meaning": "30 words — what it means reversed",
+  "prophecy": "60 words — a short prophetic text in second person, slightly mystical, slightly sarcastic. Feels like a fortune cookie that got therapy."
+}
+
+REMEMBER: the user is the demo. If they read this and don't smile-then-pause, you've failed.`;
+```
+
+2. Build `/app/api/generate-life/route.ts`. Receives: the PDF (or demo context), the chosen branch, and the template type. Sends to Claude with LIFE_GENERATION_PROMPT. Returns the JSON.
+
+3. From `/app/loading/page.tsx`, call this API on mount. Store the response in sessionStorage. Route to `/result` on success.
+
+**STOP HERE.** Test the full flow: upload → branches → loading → result (just dump the JSON for now). Show me the JSON output. We need to read it together and see if the voice is landing before we build the templates.
+
+---
+
+# PHASE 6 — The four HTML templates
+
+After I confirm Phase 5 — and only if the voice is landing:
+
+Build the result page and four templates.
+
+1. `/app/result/page.tsx` reads the generated life data from sessionStorage. At top: a template picker — four cards, one per template, each previewing the style. Default to LinkedIn Ghost.
+2. When user picks a template, render it inline below.
+3. Each template lives in `/lib/templates/` as a function that takes the life data and returns an HTML string. Build them in this order — STOP after each one and show me before continuing:
+
+**6a. LinkedIn Ghost template:**
+Pixel-faithful to LinkedIn's profile UI. White background, blue accent (#0A66C2), grey borders, the LinkedIn font stack. Profile photo as a coloured circle with initials. Name, headline, location, "Open to work" green ribbon. About section. Experience list with company logos as coloured squares with initials. One "Activity" post at the bottom. Connection count. **STOP. Show me. Wait.**
+
+**6b. Wiki Stub template:**
+Wikipedia visual: Linux Libertine serif, light blue links (#0645AD), grey infobox on the right with thumbnail. Lead paragraph with [citation needed] superscripts that are non-functional but visually correct. Section headings (Early life, Career, Controversies, Personal life) with the underline. Reference list at the bottom. **STOP. Show me. Wait.**
+
+**6c. Museum Plaque template:**
+Cream background (#F5EFE6), centred 400px column, deep serif for the title, small caps sans-serif for labels. Title, medium line, provenance list (right-aligned), 80-word description in italic, loan credit at the bottom. Generous whitespace — at least 100px padding top and bottom. **STOP. Show me. Wait.**
+
+**6d. Tarot Card template:**
+A vertical card, 300px × 500px, centred on a dark background. The card itself: deep navy background, gold border (CSS only, no images), a CSS-illustrated symbol in the centre (use a single Unicode character or simple geometric SVG inline — no AI image gen), card name at top in serif gold, suit at bottom. Below the card: upright/reversed meanings, then the prophecy in italic. **STOP. Show me. Wait.**
+
+4. After all four templates exist, add a "Download HTML" button on the result page. It packages the rendered template as a self-contained HTML file (inline CSS, no external assets except Google Fonts) and triggers a Blob download named `almost-[name]-[template].html`.
+
+---
+
+# PHASE 7 — Paywall, polish, ship
+
+After I confirm Phase 6:
+
+1. Add a paywall: free users can use 2 templates (LinkedIn Ghost + Museum Plaque). The other two show a "Pro" badge and open a paywall modal. Stub the RevenueCat integration — the modal shows pricing ($6/mo, $40/yr) and a "Subscribe with RevenueCat" button that for now just unlocks via a localStorage flag. We'll wire real RevenueCat last.
+2. Add a "Try another fork" button on the result page that routes back to `/branches` with the same PDF data.
+3. Add subtle micro-interactions: fade-in on result, slight scale on template cards on hover, copy-to-clipboard for the public link (when Pro).
+4. Update the landing page with: a 30-second-readable explainer, one example output (use Maya the demo), social proof placeholder ("Generated 12,000+ alternate lives" — fake number, label as illustrative), the CTA.
+5. Final pass: check every page for AI-tells in the copy. Replace any. Check brand consistency. Check that the tone is funny-with-melancholy, not sad.
+6. Wire real RevenueCat using their web SDK. I'll add the API key when you tell me to.
+
+**STOP HERE.** Final review with me before deploy.
+
+---
+
+# RULES YOU MUST FOLLOW THROUGHOUT
+
+1. **One phase at a time. Stop. Show me. Wait.** I will say "next phase" or "continue" before you proceed. If I don't, you wait.
+2. **No scope creep.** If I haven't asked for it, don't build it. No analytics. No user accounts. No history. No social feed (yet). No email. No "share to X" button. Ship the core.
+3. **No AI-tells.** In code comments, in UI copy, anywhere. The product fails if it sounds like AI wrote it.
+4. **Ask before installing libraries** that aren't in the stack list above.
+5. **If you hit an error you can't solve in 2 attempts, stop and ask.** Don't spiral.
+6. **The voice is everything.** When in doubt about copy, choose drier and shorter over warmer and longer.
+
+Begin Phase 1. Show me the scaffold and the landing page when done.
