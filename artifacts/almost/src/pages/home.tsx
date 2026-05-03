@@ -1,6 +1,8 @@
 import { useLocation } from "wouter";
 import { clearSession } from "@/lib/session";
 
+const GHOST_YEARS = ["1994", "2001", "2008", "2013", "2019"];
+
 export default function Home() {
   const [, navigate] = useLocation();
 
@@ -10,79 +12,122 @@ export default function Home() {
   }
 
   return (
-    <main
-      style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A" }}
-      className="min-h-screen flex flex-col items-center justify-center px-6"
-    >
-      <div className="max-w-xl w-full text-center" style={{ paddingTop: "20vh", paddingBottom: "20vh" }}>
-        <p
-          className="uppercase tracking-[0.3em] text-xs mb-10"
-          style={{ color: "#E07856", fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
-        >
-          a thought experiment
-        </p>
+    <main className="grain" style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A", minHeight: "100vh", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
 
-        <h1
-          style={{
+      {/* Ghost years — background texture */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
+        {GHOST_YEARS.map((yr, i) => (
+          <span key={yr} style={{
+            position: "absolute",
             fontFamily: "'Fraunces', Georgia, serif",
-            fontSize: "clamp(4rem, 12vw, 7rem)",
-            fontWeight: 300,
-            lineHeight: 0.92,
-            letterSpacing: "-0.02em",
+            fontWeight: 200,
+            fontSize: "clamp(5rem, 18vw, 14rem)",
             color: "#1A1A1A",
-          }}
-        >
-          Almost
-        </h1>
-
-        <p
-          className="mt-7 mb-16"
-          style={{
-            fontFamily: "'Fraunces', Georgia, serif",
-            fontStyle: "italic",
-            fontSize: "clamp(1rem, 3vw, 1.25rem)",
-            fontWeight: 300,
-            color: "#1A1A1A",
-            opacity: 0.65,
-            letterSpacing: "0.01em",
-          }}
-        >
-          the life you didn't quite live
-        </p>
-
-        <button
-          onClick={handleBegin}
-          style={{
-            backgroundColor: "#1A1A1A",
-            color: "#F5EFE6",
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "0.875rem",
-            fontWeight: 500,
-            letterSpacing: "0.05em",
-            padding: "0.875rem 2.5rem",
-            border: "none",
-            cursor: "pointer",
-            transition: "background-color 0.2s ease",
-          }}
-          onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#E07856")}
-          onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#1A1A1A")}
-        >
-          Begin →
-        </button>
+            opacity: 0.025 + i * 0.008,
+            letterSpacing: "-0.03em",
+            userSelect: "none",
+            top: `${8 + i * 17}%`,
+            left: `${-2 + i * 22}%`,
+            lineHeight: 1,
+            whiteSpace: "nowrap",
+          }}>{yr}</span>
+        ))}
       </div>
 
-      <footer
-        className="fixed bottom-8 left-0 right-0 text-center"
-        style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize: "0.7rem",
-          color: "#1A1A1A",
-          opacity: 0.3,
-          letterSpacing: "0.05em",
-        }}
-      >
-        Upload your LinkedIn. Pick a fork. See the other version.
-      </footer>
+      {/* Top bar */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 2rem", borderBottom: "1px solid rgba(26,26,26,0.06)", position: "relative", zIndex: 1 }}>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#1A1A1A", opacity: 0.3 }}>
+          A Thought Experiment
+        </span>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#E07856", opacity: 0.7 }}>
+          Vol. I
+        </span>
+      </div>
+
+      {/* Main content */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 2rem", position: "relative", zIndex: 1 }}>
+
+        {/* Logotype */}
+        <div style={{ marginBottom: "2rem" }}>
+          <h1 style={{
+            fontFamily: "'Fraunces', Georgia, serif",
+            fontSize: "clamp(5.5rem, 20vw, 14rem)",
+            fontWeight: 200,
+            fontStyle: "italic",
+            lineHeight: 0.88,
+            letterSpacing: "-0.03em",
+            color: "#1A1A1A",
+            margin: 0,
+            marginLeft: "-0.04em",
+          }}>
+            Almost
+          </h1>
+          <p style={{
+            fontFamily: "'Fraunces', Georgia, serif",
+            fontStyle: "italic",
+            fontWeight: 300,
+            fontSize: "clamp(0.875rem, 2vw, 1.125rem)",
+            color: "#1A1A1A",
+            opacity: 0.45,
+            marginTop: "1.25rem",
+            paddingLeft: "0.1em",
+            letterSpacing: "0.01em",
+          }}>
+            the life you didn't quite live
+          </p>
+        </div>
+
+        {/* Ruled divider */}
+        <div style={{ width: "3rem", height: "1px", backgroundColor: "#E07856", opacity: 0.5, marginBottom: "2.5rem" }} />
+
+        {/* Begin */}
+        <div style={{ display: "flex", alignItems: "center", gap: "3rem" }}>
+          <button
+            onClick={handleBegin}
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "0.8125rem",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "#1A1A1A",
+              background: "none",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+            }}
+            onMouseEnter={e => { (e.currentTarget.querySelector('.arr') as HTMLElement).style.transform = "translateX(4px)"; }}
+            onMouseLeave={e => { (e.currentTarget.querySelector('.arr') as HTMLElement).style.transform = "translateX(0)"; }}
+          >
+            <span style={{ width: "2rem", height: "1px", backgroundColor: "#1A1A1A", display: "inline-block", flexShrink: 0 }} />
+            Begin
+            <span className="arr" style={{ display: "inline-block", transition: "transform 0.2s ease" }}>→</span>
+          </button>
+
+          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#1A1A1A", opacity: 0.3 }}>
+            or{" "}
+            <button
+              onClick={() => { sessionStorage.setItem("almost_demo", "true"); sessionStorage.removeItem("almost_pdf_b64"); navigate("/branches"); }}
+              style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#1A1A1A", opacity: 1, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textDecorationColor: "rgba(26,26,26,0.3)", textUnderlineOffset: "3px", padding: 0 }}
+            >
+              try the demo
+            </button>
+          </span>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", padding: "1.25rem 2rem", borderTop: "1px solid rgba(26,26,26,0.06)", position: "relative", zIndex: 1 }}>
+        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.06em", color: "#1A1A1A", opacity: 0.25, maxWidth: "28ch", lineHeight: 1.6 }}>
+          Upload your LinkedIn. Pick a fork in the road. See the other version of you.
+        </p>
+        <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.625rem", color: "#1A1A1A", opacity: 0.2 }}>
+          Powered by Claude
+        </span>
+      </div>
+
     </main>
   );
 }

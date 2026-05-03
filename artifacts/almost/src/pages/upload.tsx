@@ -4,10 +4,10 @@ import { clearSession } from "@/lib/session";
 import StepProgress from "@/components/StepProgress";
 
 const STEPS = [
-  "Open LinkedIn on desktop and go to your profile",
-  "Click the \"More\" button under your profile photo",
+  "Open LinkedIn on desktop → go to your profile",
+  "Click \"More\" under your profile photo",
   "Choose \"Save to PDF\"",
-  "Wait a moment — your browser will download the file",
+  "Your browser downloads the file",
   "Come back here and drop it below",
 ];
 
@@ -18,112 +18,126 @@ export default function Upload() {
   const [instructionsOpen, setInstructionsOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const processFile = useCallback(
-    (file: File) => {
-      setError(null);
-      if (file.type !== "application/pdf") {
-        setError("That's not a PDF. Export your LinkedIn profile as PDF and try again.");
-        return;
-      }
-      if (file.size > 10 * 1024 * 1024) {
-        setError("File is over 10 MB. LinkedIn PDFs are usually under 1 MB — something's off.");
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64 = (reader.result as string).split(",")[1];
-        sessionStorage.setItem("almost_pdf_b64", base64);
-        sessionStorage.setItem("almost_demo", "false");
-        navigate("/branches");
-      };
-      reader.readAsDataURL(file);
-    },
-    [navigate]
-  );
+  const processFile = useCallback((file: File) => {
+    setError(null);
+    if (file.type !== "application/pdf") { setError("Not a PDF — export your LinkedIn profile and try again."); return; }
+    if (file.size > 10 * 1024 * 1024) { setError("Over 10 MB. LinkedIn PDFs are usually under 1 MB."); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      sessionStorage.setItem("almost_pdf_b64", (reader.result as string).split(",")[1]);
+      sessionStorage.setItem("almost_demo", "false");
+      navigate("/branches");
+    };
+    reader.readAsDataURL(file);
+  }, [navigate]);
 
   const onDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files[0];
-    if (file) processFile(file);
+    e.preventDefault(); setIsDragging(false);
+    const file = e.dataTransfer.files[0]; if (file) processFile(file);
   }, [processFile]);
 
-  const onDragOver = (e: React.DragEvent) => { e.preventDefault(); setIsDragging(true); };
-  const onDragLeave = () => setIsDragging(false);
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) processFile(file);
-  };
-
-  const handleDemo = () => {
-    sessionStorage.setItem("almost_demo", "true");
-    sessionStorage.removeItem("almost_pdf_b64");
-    navigate("/branches");
-  };
-
   return (
-    <main style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A" }} className="min-h-screen flex flex-col">
+    <main className="grain" style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <StepProgress current={1} />
 
-      <div className="flex flex-col items-center justify-center flex-1 px-6">
-        <div className="w-full max-w-lg" style={{ paddingTop: "8vh", paddingBottom: "12vh" }}>
+      {/* Nav */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1rem 2rem", borderBottom: "1px solid rgba(26,26,26,0.06)" }}>
+        <button onClick={() => { clearSession(); navigate("/"); }} style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "1rem", color: "#1A1A1A", opacity: 0.4, background: "none", border: "none", cursor: "pointer", letterSpacing: "-0.01em" }}>
+          Almost
+        </button>
+        <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "5rem", fontWeight: 200, color: "#1A1A1A", opacity: 0.06, lineHeight: 1, userSelect: "none" }}>01</span>
+      </div>
 
-          {/* Back */}
-          <button
-            onClick={() => { clearSession(); navigate("/"); }}
-            style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#1A1A1A", opacity: 0.4, letterSpacing: "0.04em", cursor: "pointer", background: "none", border: "none", padding: 0, display: "inline-block", marginBottom: "3rem" }}
-          >
-            ← Almost
-          </button>
+      {/* Content */}
+      <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 0, minHeight: 0 }}>
 
-          <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(2rem, 6vw, 3rem)", fontWeight: 300, lineHeight: 1.1, letterSpacing: "-0.01em", marginBottom: "0.75rem" }}>
-            Upload your LinkedIn
-          </h1>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.9375rem", lineHeight: 1.6, color: "#1A1A1A", opacity: 0.6, marginBottom: "2.5rem", maxWidth: "38ch" }}>
-            We'll find the moments where your life forked. You pick one. We show you the other version.
-          </p>
+        {/* Left: heading */}
+        <div style={{ padding: "4rem 2rem 4rem", borderRight: "1px solid rgba(26,26,26,0.08)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <div>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "#E07856", opacity: 0.7, marginBottom: "1.5rem" }}>
+              Step one
+            </p>
+            <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(2.25rem, 5vw, 3.5rem)", fontWeight: 300, lineHeight: 1.05, letterSpacing: "-0.02em", marginBottom: "1.5rem" }}>
+              Drop your<br />LinkedIn PDF
+            </h1>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.875rem", lineHeight: 1.7, color: "#1A1A1A", opacity: 0.5, maxWidth: "30ch" }}>
+              We'll read the contours of the life you've been building — and find where it could have gone another way.
+            </p>
+          </div>
 
-          {/* Collapsible instructions */}
-          <div style={{ marginBottom: "2rem" }}>
+          <div>
+            {/* Collapsible instructions */}
             <button
-              onClick={() => setInstructionsOpen((v) => !v)}
-              style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", color: "#1A1A1A", opacity: 0.5, background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem", letterSpacing: "0.02em" }}
+              onClick={() => setInstructionsOpen(v => !v)}
+              style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", color: "#1A1A1A", opacity: 0.4, background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: "0.5rem", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "0.75rem" }}
             >
-              <span style={{ display: "inline-block", transform: instructionsOpen ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s ease", fontSize: "0.7rem" }}>▶</span>
-              How to export your LinkedIn PDF
+              <span style={{ display: "inline-block", transform: instructionsOpen ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s", fontSize: "0.6rem" }}>▶</span>
+              How to export from LinkedIn
             </button>
             {instructionsOpen && (
-              <ol style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", lineHeight: 1.7, color: "#1A1A1A", opacity: 0.6, marginTop: "0.875rem", paddingLeft: "1.25rem" }}>
-                {STEPS.map((step, i) => <li key={i} style={{ marginBottom: "0.25rem" }}>{step}</li>)}
+              <ol style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", lineHeight: 1.8, color: "#1A1A1A", opacity: 0.5, paddingLeft: "1rem", borderLeft: "1px solid rgba(26,26,26,0.15)" }}>
+                {STEPS.map((s, i) => <li key={i}>{s}</li>)}
               </ol>
             )}
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", color: "#1A1A1A", opacity: 0.2, letterSpacing: "0.04em", marginTop: instructionsOpen ? "1rem" : 0 }}>
+              Your file is never stored. Processed once, then gone.
+            </p>
           </div>
+        </div>
 
-          {/* Drop zone */}
+        {/* Right: drop zone */}
+        <div style={{ padding: "4rem 2rem", display: "flex", flexDirection: "column", alignItems: "stretch", justifyContent: "center", gap: "1.5rem" }}>
           <div
-            onDrop={onDrop} onDragOver={onDragOver} onDragLeave={onDragLeave}
+            onDrop={onDrop}
+            onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
+            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            style={{ border: `1.5px dashed ${isDragging ? "#E07856" : "rgba(26,26,26,0.25)"}`, backgroundColor: isDragging ? "rgba(224,120,86,0.05)" : "rgba(26,26,26,0.03)", borderRadius: "2px", padding: "3rem 2rem", textAlign: "center", cursor: "pointer", transition: "border-color 0.2s ease, background-color 0.2s ease", marginBottom: "1rem" }}
+            style={{
+              flex: 1,
+              border: `1px solid ${isDragging ? "#E07856" : "rgba(26,26,26,0.15)"}`,
+              backgroundColor: isDragging ? "rgba(224,120,86,0.04)" : "transparent",
+              cursor: "pointer",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.5rem",
+              minHeight: "280px",
+              transition: "border-color 0.2s, background-color 0.2s",
+              position: "relative",
+            }}
           >
-            <input ref={inputRef} type="file" accept="application/pdf" onChange={onInputChange} style={{ display: "none" }} />
-            <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "1.125rem", fontWeight: 300, color: "#1A1A1A", opacity: 0.4, marginBottom: "0.5rem" }}>Drop your PDF here</p>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#1A1A1A", opacity: 0.35, letterSpacing: "0.03em" }}>or click to browse</p>
+            <input ref={inputRef} type="file" accept="application/pdf" style={{ display: "none" }} onChange={e => { const f = e.target.files?.[0]; if (f) processFile(f); }} />
+            {/* Corner accents */}
+            {[["top","left"],["top","right"],["bottom","left"],["bottom","right"]].map(([v,h]) => (
+              <span key={`${v}${h}`} style={{ position: "absolute", [v]: "12px", [h]: "12px", width: "12px", height: "12px", borderTop: v === "top" ? `1px solid ${isDragging ? "#E07856" : "rgba(26,26,26,0.25)"}` : "none", borderBottom: v === "bottom" ? `1px solid ${isDragging ? "#E07856" : "rgba(26,26,26,0.25)"}` : "none", borderLeft: h === "left" ? `1px solid ${isDragging ? "#E07856" : "rgba(26,26,26,0.25)"}` : "none", borderRight: h === "right" ? `1px solid ${isDragging ? "#E07856" : "rgba(26,26,26,0.25)"}` : "none", transition: "border-color 0.2s" }} />
+            ))}
+            <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontWeight: 300, fontSize: "1.25rem", color: "#1A1A1A", opacity: isDragging ? 0.7 : 0.3, transition: "opacity 0.2s" }}>
+              {isDragging ? "Release to upload" : "Drop PDF here"}
+            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", color: "#1A1A1A", opacity: 0.25, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              or click to browse
+            </p>
           </div>
 
-          {error && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", color: "#E07856", marginBottom: "0.75rem" }}>{error}</p>}
+          {error && (
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", color: "#E07856", letterSpacing: "0.01em" }}>{error}</p>
+          )}
 
-          <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-            <button
-              onClick={handleDemo}
-              style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", color: "#1A1A1A", opacity: 0.4, background: "none", border: "none", padding: 0, cursor: "pointer", textDecoration: "underline", textDecorationColor: "rgba(26,26,26,0.2)", textUnderlineOffset: "3px" }}
-            >
-              Try with a demo profile instead
-            </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(26,26,26,0.1)" }} />
+            <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#1A1A1A", opacity: 0.3 }}>or</span>
+            <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(26,26,26,0.1)" }} />
           </div>
 
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", color: "#1A1A1A", opacity: 0.3, textAlign: "center", letterSpacing: "0.03em" }}>
-            We don't store your file. It's processed once and discarded.
-          </p>
+          <button
+            onClick={() => { sessionStorage.setItem("almost_demo", "true"); sessionStorage.removeItem("almost_pdf_b64"); navigate("/branches"); }}
+            style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#1A1A1A", opacity: 0.4, background: "none", border: "none", cursor: "pointer", padding: "0.5rem 0" }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = "0.8")}
+            onMouseLeave={e => (e.currentTarget.style.opacity = "0.4")}
+          >
+            Use Zelda's demo profile instead →
+          </button>
         </div>
       </div>
     </main>
