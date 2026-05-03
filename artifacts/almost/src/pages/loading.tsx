@@ -1,14 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "wouter";
 import type { Branch } from "@/lib/types";
-
-const ONE_LINERS = [
-  "Considering the lives you didn't live...",
-  "Calculating the apartment you didn't rent...",
-  "Reviewing the breakup you didn't have...",
-  "Auditing your unwritten LinkedIn posts...",
-  "Cross-referencing your parallel divorces...",
-];
+import { getOneLinerPool } from "@/lib/one-liners";
 
 function extractAlt(framing: string): string {
   const m = framing.match(/[Ww]hat if (.+?)\??$/);
@@ -29,6 +22,7 @@ export default function Loading() {
   const [visibleBottom, setVisibleBottom] = useState<number[]>([]);
   const [topMarkers, setTopMarkers] = useState<Marker[]>([]);
   const [bottomMarkers, setBottomMarkers] = useState<Marker[]>([]);
+  const poolRef = useRef<string[]>([]);
   const calledRef = useRef(false);
 
   useEffect(() => {
@@ -38,6 +32,10 @@ export default function Loading() {
     const branch: Branch = JSON.parse(branchRaw);
     const allBranches: Branch[] = JSON.parse(sessionStorage.getItem("almost_all_branches") || "[]");
     const templateType = sessionStorage.getItem("almost_template_type") || "linkedin_ghost";
+    const isDemo = sessionStorage.getItem("almost_demo") === "true";
+
+    // Build shuffled one-liner pool once
+    poolRef.current = getOneLinerPool(isDemo);
 
     const pool = allBranches.length > 0 ? allBranches : [branch];
     const positions = [12, 34, 58, 80];
@@ -52,15 +50,15 @@ export default function Loading() {
 
     const liner = setInterval(() => {
       setOneLinerVisible(false);
-      setTimeout(() => { setOneLinerIndex((i) => (i + 1) % ONE_LINERS.length); setOneLinerVisible(true); }, 400);
+      setTimeout(() => {
+        setOneLinerIndex((i) => (i + 1) % poolRef.current.length);
+        setOneLinerVisible(true);
+      }, 400);
     }, 3000);
 
     if (!calledRef.current) {
       calledRef.current = true;
-      const isDemo = sessionStorage.getItem("almost_demo") === "true";
       const pdfB64 = sessionStorage.getItem("almost_pdf_b64");
-
-      // Clear stale result
       sessionStorage.removeItem("almost_life_result");
 
       fetch("/api/generate-life", {
@@ -78,15 +76,12 @@ export default function Loading() {
           return r.json();
         })
         .then((data) => {
-          if (data.life) {
-            sessionStorage.setItem("almost_life_result", JSON.stringify(data.life));
-          }
+          if (data.life) sessionStorage.setItem("almost_life_result", JSON.stringify(data.life));
           navigate("/result");
         })
         .catch(() => navigate("/result"));
     }
 
-    // Safety bail — navigate regardless after 27s
     const bail = setTimeout(() => navigate("/result"), 27000);
 
     return () => {
@@ -95,6 +90,8 @@ export default function Loading() {
       timers.forEach(clearTimeout);
     };
   }, [navigate]);
+
+  const currentLiner = poolRef.current[oneLinerIndex] ?? "Considering the lives you didn't live...";
 
   return (
     <main style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A" }} className="min-h-screen flex flex-col items-center justify-center px-8">
@@ -141,8 +138,11 @@ export default function Loading() {
 
         {/* One-liner */}
         <div style={{ textAlign: "center", minHeight: "2rem" }}>
-          <p className={oneLinerVisible ? "liner-in" : ""} style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(0.875rem, 2.5vw, 1rem)", color: "#1A1A1A", opacity: oneLinerVisible ? 0.65 : 0, transition: "opacity 0.4s ease", letterSpacing: "0.01em" }}>
-            {ONE_LINERS[oneLinerIndex]}
+          <p
+            className={oneLinerVisible ? "liner-in" : ""}
+            style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(0.875rem, 2.5vw, 1rem)", color: "#1A1A1A", opacity: oneLinerVisible ? 0.65 : 0, transition: "opacity 0.4s ease", letterSpacing: "0.01em" }}
+          >
+            {currentLiner}
           </p>
         </div>
       </div>

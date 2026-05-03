@@ -6,6 +6,7 @@ import WikiStub from "@/components/templates/WikiStub";
 import MuseumPlaque from "@/components/templates/MuseumPlaque";
 import TarotCard from "@/components/templates/TarotCard";
 import { clearSession } from "@/lib/session";
+import StepProgress from "@/components/StepProgress";
 
 type TemplateKey = "linkedin_ghost" | "wiki_stub" | "museum_plaque" | "tarot_card";
 
@@ -30,15 +31,7 @@ function buildDownload(containerEl: HTMLElement, name: string, label: string, te
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { -webkit-font-smoothing: antialiased; }
     body { background: #F5EFE6; }
-    .almost-footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      color: #1A1A1A;
-      opacity: 0.3;
-      letter-spacing: 0.04em;
-    }
+    .almost-footer { text-align: center; padding: 2rem 1rem; font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #1A1A1A; opacity: 0.3; letter-spacing: 0.04em; }
   </style>
 </head>
 <body>
@@ -82,11 +75,6 @@ export default function Result() {
     }
   }, [navigate]);
 
-  function handleLogoClick() {
-    clearSession();
-    navigate("/");
-  }
-
   function handleDownload() {
     if (!data || !templateRef.current) return;
     buildDownload(templateRef.current, data.name, TEMPLATE_LABELS[template], template);
@@ -97,10 +85,7 @@ export default function Result() {
       <main style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem", gap: "1.5rem" }}>
         <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "2rem", fontWeight: 300 }}>Something went wrong.</h1>
         <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.875rem", opacity: 0.5 }}>Generation may have timed out. Try again.</p>
-        <button
-          onClick={() => navigate("/template-picker")}
-          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", backgroundColor: "#1A1A1A", color: "#F5EFE6", border: "none", padding: "0.75rem 1.75rem", cursor: "pointer" }}
-        >
+        <button onClick={() => navigate("/template-picker")} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", backgroundColor: "#1A1A1A", color: "#F5EFE6", border: "none", padding: "0.75rem 1.75rem", cursor: "pointer" }}>
           Try again
         </button>
       </main>
@@ -119,25 +104,19 @@ export default function Result() {
     <main style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A", minHeight: "100vh" }}>
 
       {/* Sticky header */}
-      <div style={{ backgroundColor: "#F5EFE6", borderBottom: "1px solid rgba(26,26,26,0.1)", padding: "1rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 10 }}>
-        <button
-          onClick={() => navigate("/template-picker")}
-          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#1A1A1A", opacity: 0.4, letterSpacing: "0.04em", cursor: "pointer", background: "none", border: "none" }}
-        >
-          ← Try another format
-        </button>
-        <button
-          onClick={handleLogoClick}
-          style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.875rem", color: "#1A1A1A", opacity: 0.5, background: "none", border: "none", cursor: "pointer" }}
-        >
-          Almost
-        </button>
-        <button
-          onClick={handleDownload}
-          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", backgroundColor: "#1A1A1A", color: "#F5EFE6", border: "none", padding: "0.5rem 1.25rem", cursor: "pointer", letterSpacing: "0.04em" }}
-        >
-          Download →
-        </button>
+      <div style={{ backgroundColor: "#F5EFE6", position: "sticky", top: 0, zIndex: 10 }}>
+        <StepProgress current={4} />
+        <div style={{ borderBottom: "1px solid rgba(26,26,26,0.1)", padding: "0.875rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <button onClick={() => navigate("/template-picker")} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#1A1A1A", opacity: 0.4, letterSpacing: "0.04em", cursor: "pointer", background: "none", border: "none" }}>
+            ← Try another format
+          </button>
+          <button onClick={() => { clearSession(); navigate("/"); }} style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.875rem", color: "#1A1A1A", opacity: 0.5, background: "none", border: "none", cursor: "pointer" }}>
+            Almost
+          </button>
+          <button onClick={handleDownload} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", backgroundColor: "#1A1A1A", color: "#F5EFE6", border: "none", padding: "0.5rem 1.25rem", cursor: "pointer", letterSpacing: "0.04em" }}>
+            Download →
+          </button>
+        </div>
       </div>
 
       {/* Fork summary */}
@@ -160,11 +139,8 @@ export default function Result() {
         </span>
       </div>
 
-      {/* Template render — ref captures this for download */}
-      <div
-        ref={templateRef}
-        style={{ border: "1px solid rgba(26,26,26,0.1)", margin: "0 1.5rem 2rem", borderRadius: "2px", overflow: "hidden", maxWidth: "680px", marginLeft: "auto", marginRight: "auto" }}
-      >
+      {/* Template render */}
+      <div ref={templateRef} style={{ border: "1px solid rgba(26,26,26,0.1)", margin: "0 1.5rem 2rem", borderRadius: "2px", overflow: "hidden", maxWidth: "680px", marginLeft: "auto", marginRight: "auto" }}>
         {template === "linkedin_ghost" && <LinkedInGhost data={data} />}
         {template === "wiki_stub" && <WikiStub data={data} />}
         {template === "museum_plaque" && <MuseumPlaque data={data} />}
@@ -173,16 +149,10 @@ export default function Result() {
 
       {/* Bottom actions */}
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1.5rem", paddingBottom: "3rem" }}>
-        <button
-          onClick={() => navigate("/template-picker")}
-          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", background: "none", border: "1px solid rgba(26,26,26,0.2)", color: "#1A1A1A", padding: "0.625rem 1.5rem", cursor: "pointer", letterSpacing: "0.04em", borderRadius: "2px" }}
-        >
+        <button onClick={() => navigate("/template-picker")} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", background: "none", border: "1px solid rgba(26,26,26,0.2)", color: "#1A1A1A", padding: "0.625rem 1.5rem", cursor: "pointer", letterSpacing: "0.04em", borderRadius: "2px" }}>
           Try a different format →
         </button>
-        <button
-          onClick={handleLogoClick}
-          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", background: "none", border: "none", color: "#1A1A1A", opacity: 0.3, cursor: "pointer", letterSpacing: "0.04em" }}
-        >
+        <button onClick={() => { clearSession(); navigate("/"); }} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", background: "none", border: "none", color: "#1A1A1A", opacity: 0.3, cursor: "pointer", letterSpacing: "0.04em" }}>
           Start over
         </button>
       </div>
