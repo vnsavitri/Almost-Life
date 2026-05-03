@@ -43,7 +43,7 @@ export default function About() {
         }}>
           Every career is a series of doors you didn't open.
         </h1>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "start" }}>
+        <div className="about-hero-grid">
           <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(1rem, 2.5vw, 1.25rem)", lineHeight: 1.55, color: "#52050A", opacity: 0.75 }}>
             You chose the startup over the sabbatical. The promotion over the pivot. The sensible thing, the brave thing, the thing that seemed obvious at the time.
           </p>
@@ -61,7 +61,7 @@ export default function About() {
         <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#52050A", opacity: 0.25, marginBottom: "3rem" }}>
           How it works
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0", borderTop: "1px solid rgba(82,5,10,0.1)", borderLeft: "1px solid rgba(82,5,10,0.1)" }}>
+        <div className="about-steps-grid">
           {[
             { n: "01", label: "Upload", body: "Your LinkedIn PDF. We parse the contours — titles, transitions, moments where the road branched." },
             { n: "02", label: "Fork", body: "The AI surfaces three or four genuine choice-points in your career. You pick the one that's stayed with you." },
@@ -94,7 +94,7 @@ export default function About() {
       </div>
 
       {/* Privacy + data section */}
-      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "4rem 2rem", display: "grid", gridTemplateColumns: "1fr 2fr", gap: "3rem", alignItems: "start" }}>
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "4rem 2rem" }} className="about-side-grid">
         <div>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#52050A", opacity: 0.25, marginBottom: "1rem" }}>On your data</p>
           <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.875rem", color: "#52050A", opacity: 0.4, lineHeight: 1.6 }}>
@@ -119,7 +119,7 @@ export default function About() {
       <div style={{ borderTop: "1px solid rgba(82,5,10,0.08)", margin: "0 2rem" }} />
 
       {/* Built by Vivid */}
-      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "4rem 2rem", display: "grid", gridTemplateColumns: "1fr 2fr", gap: "3rem", alignItems: "start" }}>
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "4rem 2rem" }} className="about-side-grid">
         <div>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#52050A", opacity: 0.25, marginBottom: "1rem" }}>Built by</p>
           <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontWeight: 300, fontSize: "1.5rem", letterSpacing: "-0.01em", color: "#52050A", marginBottom: "1.25rem" }}>Vivid</p>

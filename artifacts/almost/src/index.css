@@ -62,7 +62,8 @@
   * { @apply border-border; box-sizing: border-box; }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased text-foreground;
+    background-color: #BCD2EE;
     font-feature-settings: "kern" 1, "liga" 1, "ss01" 1;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -195,3 +196,37 @@
 
 .animate-in { animation: almost-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 .fade-up { animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+/* About page — responsive grids */
+.about-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.about-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid rgba(82,5,10,0.1);
+  border-left: 1px solid rgba(82,5,10,0.1);
+}
+.about-side-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 3rem;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .about-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .about-steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .about-side-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
