@@ -38,3 +38,8 @@ externalPort = 3003
 [[ports]]
 localPort = 21124
 externalPort = 3000
+
+[userenv]
+
+[userenv.development]
+DISABLE_RATE_LIMIT = "true"
