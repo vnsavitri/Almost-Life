@@ -9,11 +9,25 @@ export default function Branches() {
   const [branches, setBranches] = useState<Branch[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // If user came back from result to try a different fork, skip template-picker
+  const returnMode = sessionStorage.getItem("almost_return_mode") === "fork";
 
   useEffect(() => {
     const isDemo = sessionStorage.getItem("almost_demo") === "true";
     const pdfB64 = sessionStorage.getItem("almost_pdf_b64");
     if (!isDemo && !pdfB64) { navigate("/upload"); return; }
+
+    // Use cached branches if available — no extra API call
+    const cached = sessionStorage.getItem("almost_all_branches");
+    if (cached) {
+      try {
+        setBranches(JSON.parse(cached));
+        setLoading(false);
+        return;
+      } catch {
+        // fall through to fetch
+      }
+    }
 
     fetch("/api/extract-branches", {
       method: "POST",
@@ -38,7 +52,13 @@ export default function Branches() {
   const pickBranch = (branch: Branch) => {
     sessionStorage.setItem("almost_branch", JSON.stringify(branch));
     sessionStorage.removeItem("almost_life_result");
-    navigate("/template-picker");
+    if (returnMode) {
+      // Coming back from result — keep same template, go straight to loading
+      sessionStorage.removeItem("almost_return_mode");
+      navigate("/loading");
+    } else {
+      navigate("/template-picker");
+    }
   };
 
   return (
@@ -47,8 +67,14 @@ export default function Branches() {
 
       {/* Top nav */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1rem 1.5rem" }}>
-        <button onClick={() => navigate("/upload")} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#1A1A1A", opacity: 0.4, letterSpacing: "0.04em", cursor: "pointer", background: "none", border: "none" }}>
-          ← Back
+        <button
+          onClick={() => {
+            sessionStorage.removeItem("almost_return_mode");
+            navigate(returnMode ? "/result" : "/upload");
+          }}
+          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#1A1A1A", opacity: 0.4, letterSpacing: "0.04em", cursor: "pointer", background: "none", border: "none" }}
+        >
+          ← {returnMode ? "Back to result" : "Back"}
         </button>
         <button onClick={() => { clearSession(); navigate("/"); }} style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.9375rem", color: "#1A1A1A", opacity: 0.4, background: "none", border: "none", cursor: "pointer" }}>
           Almost
@@ -85,18 +111,22 @@ export default function Branches() {
 
           {!loading && !error && branches.length > 0 && (
             <div>
-              <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(1.75rem, 5vw, 2.5rem)", fontWeight: 300, lineHeight: 1.15, marginBottom: "0.75rem" }}>Pick a fork.</h1>
+              <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(1.75rem, 5vw, 2.5rem)", fontWeight: 300, lineHeight: 1.15, marginBottom: "0.75rem" }}>
+                {returnMode ? "Pick a different fork." : "Pick a fork."}
+              </h1>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.875rem", opacity: 0.45, marginBottom: "3rem" }}>
-                These are the moments where everything could have gone differently.
+                {returnMode
+                  ? "Choose a different moment. Same format, new life generated."
+                  : "These are the moments where everything could have gone differently."}
               </p>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 {branches.map((branch) => (
                   <button
                     key={branch.id}
                     onClick={() => pickBranch(branch)}
-                    style={{ display: "block", width: "100%", textAlign: "left", backgroundColor: "transparent", border: "none", borderTop: "1px solid rgba(26,26,26,0.12)", padding: "1.5rem 0", cursor: "pointer" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(26,26,26,0.04)"; e.currentTarget.style.paddingLeft = "0.75rem"; e.currentTarget.style.paddingRight = "0.75rem"; e.currentTarget.style.margin = "0 -0.75rem"; e.currentTarget.style.width = "calc(100% + 1.5rem)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.paddingLeft = "0"; e.currentTarget.style.paddingRight = "0"; e.currentTarget.style.margin = "0"; e.currentTarget.style.width = "100%"; }}
+                    style={{ display: "block", width: "100%", textAlign: "left", backgroundColor: "transparent", border: "none", borderTop: "1px solid rgba(26,26,26,0.12)", padding: "1.5rem 0", cursor: "pointer", transition: "padding 0.15s, background-color 0.15s" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(26,26,26,0.04)"; e.currentTarget.style.paddingLeft = "0.75rem"; e.currentTarget.style.paddingRight = "0.75rem"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.paddingLeft = "0"; e.currentTarget.style.paddingRight = "0"; }}
                   >
                     <div style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(2.5rem, 7vw, 3.5rem)", fontWeight: 300, lineHeight: 1, color: "#E07856", opacity: 0.5, marginBottom: "0.5rem" }}>{branch.year}</div>
                     <div style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.9375rem", lineHeight: 1.55, color: "#1A1A1A", maxWidth: "44ch" }}>{branch.framing}</div>

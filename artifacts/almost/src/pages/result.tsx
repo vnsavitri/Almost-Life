@@ -80,6 +80,13 @@ export default function Result() {
     buildDownload(templateRef.current, data.name, TEMPLATE_LABELS[template], template);
   }
 
+  function handleTryDifferentFork() {
+    sessionStorage.setItem("almost_return_mode", "fork");
+    sessionStorage.removeItem("almost_branch");
+    sessionStorage.removeItem("almost_life_result");
+    navigate("/branches");
+  }
+
   if (failed) {
     return (
       <main style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem", gap: "1.5rem" }}>
@@ -108,7 +115,7 @@ export default function Result() {
         <StepProgress current={4} />
         <div style={{ borderBottom: "1px solid rgba(26,26,26,0.1)", padding: "0.875rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <button onClick={() => navigate("/template-picker")} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#1A1A1A", opacity: 0.4, letterSpacing: "0.04em", cursor: "pointer", background: "none", border: "none" }}>
-            ← Try another format
+            ← Change format
           </button>
           <button onClick={() => { clearSession(); navigate("/"); }} style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.875rem", color: "#1A1A1A", opacity: 0.5, background: "none", border: "none", cursor: "pointer" }}>
             Almost
@@ -148,11 +155,23 @@ export default function Result() {
       </div>
 
       {/* Bottom actions */}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1.5rem", paddingBottom: "3rem" }}>
-        <button onClick={() => navigate("/template-picker")} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", background: "none", border: "1px solid rgba(26,26,26,0.2)", color: "#1A1A1A", padding: "0.625rem 1.5rem", cursor: "pointer", letterSpacing: "0.04em", borderRadius: "2px" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "0.75rem 1.5rem", paddingBottom: "3rem", padding: "0 1.5rem 3rem" }}>
+        <button
+          onClick={handleTryDifferentFork}
+          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", backgroundColor: "#E07856", color: "#fff", border: "none", padding: "0.65rem 1.5rem", cursor: "pointer", letterSpacing: "0.04em", borderRadius: "2px" }}
+        >
+          ↩ Try a different fork
+        </button>
+        <button
+          onClick={() => navigate("/template-picker")}
+          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", background: "none", border: "1px solid rgba(26,26,26,0.2)", color: "#1A1A1A", padding: "0.625rem 1.5rem", cursor: "pointer", letterSpacing: "0.04em", borderRadius: "2px" }}
+        >
           Try a different format →
         </button>
-        <button onClick={() => { clearSession(); navigate("/"); }} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", background: "none", border: "none", color: "#1A1A1A", opacity: 0.3, cursor: "pointer", letterSpacing: "0.04em" }}>
+        <button
+          onClick={() => { clearSession(); navigate("/"); }}
+          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", background: "none", border: "none", color: "#1A1A1A", opacity: 0.3, cursor: "pointer", letterSpacing: "0.04em" }}
+        >
           Start over
         </button>
       </div>
