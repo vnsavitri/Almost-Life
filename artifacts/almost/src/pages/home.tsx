@@ -36,7 +36,7 @@ export default function Home() {
 
       {/* Top bar */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 2rem", borderBottom: "1px solid rgba(82,5,10,0.06)", position: "relative", zIndex: 1 }}>
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#52050A", opacity: 0.3 }}>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#52050A", opacity: 0.5 }}>
           A Thought Experiment
         </span>
         <button
@@ -124,11 +124,11 @@ export default function Home() {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", padding: "1.25rem 2rem", borderTop: "1px solid rgba(82,5,10,0.06)", position: "relative", zIndex: 1 }}>
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.06em", color: "#52050A", opacity: 0.25, maxWidth: "28ch", lineHeight: 1.6 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", padding: "1.25rem 2rem", borderTop: "1px solid rgba(82,5,10,0.12)", position: "relative", zIndex: 1 }}>
+        <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontWeight: 300, fontSize: "0.75rem", letterSpacing: "0.01em", color: "#52050A", opacity: 0.55, maxWidth: "36ch", lineHeight: 1.6 }}>
           Upload your LinkedIn. Pick a fork in the road. See the other version of you.
         </p>
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#832161", opacity: 0.35 }}>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#832161", opacity: 0.65 }}>
           Vol. I
         </span>
       </div>

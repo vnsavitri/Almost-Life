@@ -115,7 +115,7 @@ export default function Upload() {
             <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontWeight: 300, fontSize: "1.25rem", color: "#52050A", opacity: isDragging ? 0.7 : 0.3, transition: "opacity 0.2s" }}>
               {isDragging ? "Release to upload" : "Drop PDF here"}
             </p>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", color: "#52050A", opacity: 0.25, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", color: "#52050A", opacity: 0.45, letterSpacing: "0.06em", textTransform: "uppercase" }}>
               or click to browse
             </p>
           </div>

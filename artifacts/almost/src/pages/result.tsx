@@ -50,7 +50,7 @@ function ShareModal({ data, template, onClose }: ShareModalProps) {
         <div style={{ backgroundColor: "#52050A", padding: "2rem 2rem 1.75rem" }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1.25rem" }}>
             <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.875rem", color: "#BCD2EE", opacity: 0.3 }}>Almost</span>
-            <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#BCD2EE", opacity: 0.15 }}>the life you didn't quite live</span>
+            <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#BCD2EE", opacity: 0.4 }}>the life you didn't quite live</span>
           </div>
           <div style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontWeight: 200, fontSize: "clamp(2.5rem, 12vw, 3.5rem)", color: "#832161", opacity: 0.85, lineHeight: 0.9, marginBottom: "1rem" }}>
             {payload.y}
