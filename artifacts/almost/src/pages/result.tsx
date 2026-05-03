@@ -108,6 +108,12 @@ export default function Result() {
       try { setRateLimited(JSON.parse(rlRaw)); } catch { setRateLimited({ reset_in_hours: 24 }); }
       return;
     }
+    const genError = sessionStorage.getItem("almost_gen_error");
+    if (genError) {
+      sessionStorage.removeItem("almost_gen_error");
+      setFailed(true);
+      return;
+    }
     const raw = sessionStorage.getItem("almost_life_result");
     const templateKey = (sessionStorage.getItem("almost_template_type") || "linkedin_ghost") as TemplateKey;
     setTemplate(templateKey);

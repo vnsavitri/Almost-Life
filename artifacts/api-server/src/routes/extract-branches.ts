@@ -1,5 +1,6 @@
 import { Router } from "express";
-import Anthropic from "@anthropic-ai/sdk";
+import { openrouter } from "@workspace/integrations-openrouter-ai";
+import pdfParse from "pdf-parse";
 
 const router = Router();
 
@@ -71,48 +72,38 @@ router.post("/extract-branches", async (req, res) => {
     return;
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    res.status(500).json({ error: "ANTHROPIC_API_KEY not configured" });
+  let profileText = "";
+  try {
+    const buffer = Buffer.from(pdf_b64, "base64");
+    const parsed = await pdfParse(buffer);
+    profileText = parsed.text;
+  } catch (err) {
+    req.log.error({ err }, "Failed to parse PDF");
+    res.status(400).json({ error: "Could not read PDF. Make sure it's a valid LinkedIn export." });
     return;
   }
 
-  const client = new Anthropic({ apiKey });
-
-  const message = await client.messages.create({
-    model: "claude-3-5-haiku-20241022",
-    max_tokens: 1024,
-    system: BRANCH_EXTRACTION_PROMPT,
+  const response = await openrouter.chat.completions.create({
+    model: "anthropic/claude-haiku-4.5",
+    max_tokens: 8192,
     messages: [
+      { role: "system", content: BRANCH_EXTRACTION_PROMPT },
       {
         role: "user",
-        content: [
-          {
-            type: "document",
-            source: {
-              type: "base64",
-              media_type: "application/pdf",
-              data: pdf_b64,
-            },
-          } as Anthropic.DocumentBlockParam,
-          {
-            type: "text",
-            text: "Analyze this LinkedIn profile and return the branch points as a JSON array.",
-          },
-        ],
+        content: `Analyze this LinkedIn profile and return the branch points as a JSON array:\n\n${profileText}`,
       },
     ],
   });
 
-  const raw = message.content[0].type === "text" ? message.content[0].text : "";
+  const raw = response.choices[0]?.message?.content ?? "";
 
   let branches;
   try {
     const cleaned = raw.replace(/```json|```/g, "").trim();
     branches = JSON.parse(cleaned);
   } catch {
-    req.log.error({ raw }, "Failed to parse Claude response");
-    res.status(500).json({ error: "Failed to parse response from Claude", raw });
+    req.log.error({ raw }, "Failed to parse OpenRouter extract-branches response");
+    res.status(500).json({ error: "Failed to parse response from model", raw });
     return;
   }
 
