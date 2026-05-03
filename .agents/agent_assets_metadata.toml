@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "g4Z5oixBHcJZi0JBcrrI1"
+uri = "file://artifacts/almost/public/favicon.svg"
+type = "image"
+title = "Almost favicon"
