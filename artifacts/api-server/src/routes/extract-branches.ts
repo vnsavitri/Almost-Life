@@ -96,7 +96,7 @@ router.post("/extract-branches", async (req, res) => {
       { role: "system", content: BRANCH_EXTRACTION_PROMPT },
       {
         role: "user",
-        content: `Analyze this LinkedIn profile and return the branch points as a JSON array:\n\n${profileText}`,
+        content: `Analyze this LinkedIn profile and return the result as a JSON object with "name" and "branches" fields:\n\n${profileText}`,
       },
     ],
   });
@@ -106,14 +106,20 @@ router.post("/extract-branches", async (req, res) => {
   let parsed: { name?: string; branches?: unknown[] };
   try {
     const cleaned = raw.replace(/```json|```/g, "").trim();
-    parsed = JSON.parse(cleaned);
+    const value = JSON.parse(cleaned);
+    // Defensive: if model returned a bare array instead of the expected object
+    if (Array.isArray(value)) {
+      parsed = { name: undefined, branches: value };
+    } else {
+      parsed = value;
+    }
   } catch {
     req.log.error({ raw }, "Failed to parse OpenRouter extract-branches response");
     res.status(500).json({ error: "Failed to parse response from model", raw });
     return;
   }
 
-  res.json({ name: parsed.name ?? "You", branches: parsed.branches ?? [] });
+  res.json({ name: parsed.name ?? null, branches: parsed.branches ?? [] });
 });
 
 export default router;
