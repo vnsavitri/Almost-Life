@@ -175,12 +175,14 @@ export default function Result() {
     );
   }
 
+  const ease = "cubic-bezier(0.16, 1, 0.3, 1)";
+
   return (
     <main className="grain" style={{ backgroundColor: "#BCD2EE", color: "#52050A", minHeight: "100vh" }}>
       {shareOpen && <ShareModal data={data} template={template} onClose={() => setShareOpen(false)} />}
 
       {/* Sticky header */}
-      <div style={{ backgroundColor: "#BCD2EE", position: "sticky", top: 0, zIndex: 10 }}>
+      <div style={{ backgroundColor: "#BCD2EE", position: "sticky", top: 0, zIndex: 10, animation: `result-reveal 0.7s ${ease} 0ms both` }}>
         <StepProgress current={4} />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.875rem 2rem", borderBottom: "1px solid rgba(82,5,10,0.08)", gap: "1rem" }}>
           <button onClick={() => navigate("/template-picker")} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#52050A", opacity: 0.3, background: "none", border: "none", cursor: "pointer", flexShrink: 0 }}>
@@ -201,7 +203,7 @@ export default function Result() {
       </div>
 
       {/* Fork headline */}
-      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "3rem 2rem 1.5rem" }}>
+      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "3rem 2rem 1.5rem", animation: `result-reveal 0.9s ${ease} 80ms both` }}>
         <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "#832161", opacity: 0.6, marginBottom: "0.75rem" }}>
           {data.year_of_fork} · the road not taken
         </p>
@@ -218,7 +220,7 @@ export default function Result() {
       </div>
 
       {/* Template */}
-      <div ref={templateRef} style={{ border: "1px solid rgba(82,5,10,0.1)", margin: "1rem 2rem 0", maxWidth: "760px", marginLeft: "auto", marginRight: "auto", overflow: "hidden" }}>
+      <div ref={templateRef} style={{ border: "1px solid rgba(82,5,10,0.1)", margin: "1rem 2rem 0", maxWidth: "760px", marginLeft: "auto", marginRight: "auto", overflow: "hidden", animation: `result-reveal 1.1s ${ease} 200ms both` }}>
         {template === "linkedin_ghost" && <LinkedInGhost data={data} />}
         {template === "wiki_stub" && <WikiStub data={data} />}
         {template === "museum_plaque" && <MuseumPlaque data={data} />}
@@ -226,7 +228,7 @@ export default function Result() {
       </div>
 
       {/* Bottom actions */}
-      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "2rem 2rem 4rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem", borderTop: "1px solid rgba(82,5,10,0.06)", marginTop: "2rem" }}>
+      <div style={{ maxWidth: "760px", margin: "0 auto", padding: "2rem 2rem 4rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem", borderTop: "1px solid rgba(82,5,10,0.06)", marginTop: "2rem", animation: `result-reveal 1s ${ease} 380ms both` }}>
         <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
           <button onClick={handleTryDifferentFork} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#832161", background: "none", border: "none", cursor: "pointer" }}>
             ↩ Different fork
