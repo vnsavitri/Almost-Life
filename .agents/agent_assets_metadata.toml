@@ -6,3 +6,9 @@ id = "g4Z5oixBHcJZi0JBcrrI1"
 uri = "file://artifacts/almost/public/favicon.svg"
 type = "image"
 title = "Almost favicon"
+
+[[outputs]]
+id = "i5H9wiaOq4DOchFfIhcQs"
+uri = "file://artifacts/almost/public/opengraph.jpg"
+type = "image"
+title = "Almost — OG preview card"
