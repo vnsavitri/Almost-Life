@@ -9,12 +9,17 @@ export default function Branches() {
   const [branches, setBranches] = useState<Branch[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [subjectName, setSubjectName] = useState<string | null>(null);
   const returnMode = sessionStorage.getItem("almost_return_mode") === "fork";
+  const isDemo = sessionStorage.getItem("almost_demo") === "true";
 
   useEffect(() => {
-    const isDemo = sessionStorage.getItem("almost_demo") === "true";
     const pdfB64 = sessionStorage.getItem("almost_pdf_b64");
     if (!isDemo && !pdfB64) { navigate("/upload"); return; }
+
+    // Restore cached name if already known
+    const cachedName = sessionStorage.getItem("almost_user_name");
+    if (cachedName) setSubjectName(cachedName);
 
     const cached = sessionStorage.getItem("almost_all_branches");
     if (cached) {
@@ -30,11 +35,14 @@ export default function Branches() {
       .then(data => {
         setBranches(data.branches);
         sessionStorage.setItem("almost_all_branches", JSON.stringify(data.branches));
-        if (data.name) sessionStorage.setItem("almost_user_name", data.name);
+        if (data.name) {
+          sessionStorage.setItem("almost_user_name", data.name);
+          setSubjectName(data.name);
+        }
         setLoading(false);
       })
       .catch(err => { setError(typeof err === "string" ? err : "Something went wrong."); setLoading(false); });
-  }, [navigate]);
+  }, [navigate, isDemo]);
 
   const pickBranch = (branch: Branch) => {
     sessionStorage.setItem("almost_branch", JSON.stringify(branch));
@@ -70,7 +78,11 @@ export default function Branches() {
           <div>
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "#832161", opacity: 0.7, marginBottom: "0.5rem" }}>Step two</p>
             <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(1.75rem, 4vw, 2.5rem)", fontWeight: 300, letterSpacing: "-0.02em", lineHeight: 1.1 }}>
-              {returnMode ? "Pick a different fork" : "Where did the road fork?"}
+              {returnMode
+                ? "Pick a different fork"
+                : subjectName
+                  ? <>Where did the road fork{" "}<span style={{ fontStyle: "italic", opacity: 0.55 }}>for {subjectName.split(" ")[0]}?</span></>
+                  : "Where did the road fork?"}
             </h1>
           </div>
           <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "5rem", fontWeight: 200, color: "#52050A", opacity: 0.05, lineHeight: 1, flexShrink: 0, marginLeft: "1rem" }}>02</span>
