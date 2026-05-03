@@ -151,7 +151,7 @@ export default function Upload() {
             onMouseEnter={e => (e.currentTarget.style.opacity = "0.8")}
             onMouseLeave={e => (e.currentTarget.style.opacity = "0.4")}
           >
-            What if Zelda hadn't sealed Ganon? →
+            or see if Zelda didn't fight Ganon? →
           </button>
         </div>
       </div>
