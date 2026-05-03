@@ -64,8 +64,8 @@ export function buildShareUrl(payload: SharePayload): string {
 }
 
 export function xShareUrl(payload: SharePayload, shareUrl: string): string {
-  const text = `I just discovered the life I almost lived.\n\n"${payload.fs}"\n\nOther me: ${payload.ar} in ${payload.al}\n\nGenerate yours →`;
-  return `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+  const text = `I just discovered the life I almost lived.\n\n"${payload.fs}"\n\nOther me: ${payload.ar} in ${payload.al}\n\nFind yours at Almost-life →`;
+  return `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent("https://almost--vnsavitri.replit.app/")}`;
 }
 
 export function linkedInShareUrl(payload: SharePayload, shareUrl: string): string {
