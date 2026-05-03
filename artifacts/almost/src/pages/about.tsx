@@ -64,7 +64,7 @@ export default function About() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0", borderTop: "1px solid rgba(82,5,10,0.1)", borderLeft: "1px solid rgba(82,5,10,0.1)" }}>
           {[
             { n: "01", label: "Upload", body: "Your LinkedIn PDF. We parse the contours — titles, transitions, moments where the road branched." },
-            { n: "02", label: "Fork", body: "Claude surfaces three or four genuine choice-points in your career. You pick the one that's stayed with you." },
+            { n: "02", label: "Fork", body: "The AI surfaces three or four genuine choice-points in your career. You pick the one that's stayed with you." },
             { n: "03", label: "Format", body: "Choose how your alternate life gets told. A LinkedIn profile. A Wikipedia stub. A museum plaque. A tarot card." },
             { n: "04", label: "Result", body: "The other version of you, fully rendered. Download it. Share it. Leave it open in a tab for a while." },
           ].map(step => (
