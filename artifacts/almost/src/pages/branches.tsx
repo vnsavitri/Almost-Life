@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useLocation, Link } from "wouter";
+import { useLocation } from "wouter";
 import type { Branch } from "@/lib/types";
+import { clearSession } from "@/lib/session";
 
 export default function Branches() {
   const [, navigate] = useLocation();
@@ -45,28 +46,36 @@ export default function Branches() {
     navigate("/template-picker");
   };
 
+  function handleLogoClick() {
+    clearSession();
+    navigate("/");
+  }
+
   return (
-    <main
-      style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A" }}
-      className="min-h-screen flex flex-col items-center px-6"
-    >
+    <main style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A" }} className="min-h-screen flex flex-col items-center px-6">
       <div className="w-full max-w-xl" style={{ paddingTop: "10vh", paddingBottom: "10vh" }}>
-        <Link href="/upload">
-          <span
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: "0.75rem",
-              color: "#1A1A1A",
-              opacity: 0.4,
-              letterSpacing: "0.04em",
-              cursor: "pointer",
-              display: "inline-block",
-              marginBottom: "3rem",
-            }}
+
+        {/* Top nav */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3rem" }}>
+          <button
+            onClick={() => navigate("/upload")}
+            style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#1A1A1A", opacity: 0.4, letterSpacing: "0.04em", cursor: "pointer", background: "none", border: "none" }}
           >
             ← Back
-          </span>
-        </Link>
+          </button>
+          <button
+            onClick={handleLogoClick}
+            style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.9375rem", color: "#1A1A1A", opacity: 0.4, background: "none", border: "none", cursor: "pointer" }}
+          >
+            Almost
+          </button>
+          <button
+            onClick={handleLogoClick}
+            style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#1A1A1A", opacity: 0.25, letterSpacing: "0.04em", cursor: "pointer", background: "none", border: "none" }}
+          >
+            Start over
+          </button>
+        </div>
 
         {loading && (
           <div>
@@ -89,11 +98,12 @@ export default function Branches() {
           <div>
             <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "2rem", fontWeight: 300, marginBottom: "1rem" }}>Something broke.</h1>
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.875rem", color: "#E07856", marginBottom: "2rem" }}>{error}</p>
-            <Link href="/upload">
-              <button style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", backgroundColor: "#1A1A1A", color: "#F5EFE6", border: "none", padding: "0.75rem 1.75rem", cursor: "pointer", letterSpacing: "0.04em" }}>
-                Try again
-              </button>
-            </Link>
+            <button
+              onClick={() => navigate("/upload")}
+              style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", backgroundColor: "#1A1A1A", color: "#F5EFE6", border: "none", padding: "0.75rem 1.75rem", cursor: "pointer", letterSpacing: "0.04em" }}
+            >
+              Try again
+            </button>
           </div>
         )}
 

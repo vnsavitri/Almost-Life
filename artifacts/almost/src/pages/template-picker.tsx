@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
+import { clearSession } from "@/lib/session";
 
 type TemplateKey = "linkedin_ghost" | "wiki_stub" | "museum_plaque" | "tarot_card";
 
@@ -108,49 +109,71 @@ export default function TemplatePicker() {
     navigate("/loading");
   }
 
+  function handleLogoClick() {
+    clearSession();
+    navigate("/");
+  }
+
   return (
     <main style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem" }}>
-      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.35, marginBottom: "1rem" }}>
-        choose your format
-      </p>
-      <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(1.5rem, 4vw, 2rem)", fontWeight: 300, marginBottom: "0.5rem", textAlign: "center" }}>
-        How should Other You be remembered?
-      </h1>
-      <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.9375rem", opacity: 0.45, marginBottom: "3rem", textAlign: "center" }}>
-        Pick one. We'll write it properly.
-      </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem", width: "100%", maxWidth: "600px" }}>
-        {TEMPLATES.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => pick(t.key)}
-            style={{ background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}
-          >
-            <div style={{ border: "1px solid rgba(26,26,26,0.12)", borderRadius: "3px", overflow: "hidden", transition: "border-color 0.15s, transform 0.15s", backgroundColor: "#fff" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "#1A1A1A"; (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(26,26,26,0.12)"; (e.currentTarget as HTMLDivElement).style.transform = "none"; }}
-            >
-              {/* Preview */}
-              <div style={{ height: "140px", overflow: "hidden" }}>
-                {t.preview}
-              </div>
-              {/* Label */}
-              <div style={{ padding: "0.75rem 1rem", borderTop: "1px solid rgba(26,26,26,0.08)", backgroundColor: "#F5EFE6" }}>
-                <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "0.9375rem", fontWeight: 400, color: "#1A1A1A", marginBottom: "2px" }}>{t.label}</p>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", color: "#1A1A1A", opacity: 0.4, letterSpacing: "0.02em" }}>{t.sub}</p>
-              </div>
-            </div>
-          </button>
-        ))}
+      {/* Top nav */}
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1rem 1.5rem", backgroundColor: "#F5EFE6", borderBottom: "1px solid rgba(26,26,26,0.08)", zIndex: 10 }}>
+        <button
+          onClick={() => navigate("/branches")}
+          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#1A1A1A", opacity: 0.4, letterSpacing: "0.04em", cursor: "pointer", background: "none", border: "none" }}
+        >
+          ← Back
+        </button>
+        <button
+          onClick={handleLogoClick}
+          style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.9375rem", color: "#1A1A1A", opacity: 0.45, background: "none", border: "none", cursor: "pointer" }}
+        >
+          Almost
+        </button>
+        <button
+          onClick={handleLogoClick}
+          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#1A1A1A", opacity: 0.25, letterSpacing: "0.04em", cursor: "pointer", background: "none", border: "none" }}
+        >
+          Start over
+        </button>
       </div>
 
-      <button
-        onClick={() => navigate("/branches")}
-        style={{ marginTop: "2.5rem", fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", background: "none", border: "none", color: "#1A1A1A", opacity: 0.35, cursor: "pointer", letterSpacing: "0.04em" }}
-      >
-        ← Back to forks
-      </button>
+      <div style={{ marginTop: "4rem", width: "100%", maxWidth: "600px" }}>
+        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.35, marginBottom: "1rem", textAlign: "center" }}>
+          choose your format
+        </p>
+        <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(1.5rem, 4vw, 2rem)", fontWeight: 300, marginBottom: "0.5rem", textAlign: "center" }}>
+          How should Other You be remembered?
+        </h1>
+        <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.9375rem", opacity: 0.45, marginBottom: "3rem", textAlign: "center" }}>
+          Pick one. We'll write it properly.
+        </p>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem" }}>
+          {TEMPLATES.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => pick(t.key)}
+              style={{ background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}
+            >
+              <div
+                style={{ border: "1px solid rgba(26,26,26,0.12)", borderRadius: "3px", overflow: "hidden", transition: "border-color 0.15s, transform 0.15s", backgroundColor: "#fff" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "#1A1A1A"; (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(26,26,26,0.12)"; (e.currentTarget as HTMLDivElement).style.transform = "none"; }}
+              >
+                <div style={{ height: "140px", overflow: "hidden" }}>
+                  {t.preview}
+                </div>
+                <div style={{ padding: "0.75rem 1rem", borderTop: "1px solid rgba(26,26,26,0.08)", backgroundColor: "#F5EFE6" }}>
+                  <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "0.9375rem", fontWeight: 400, color: "#1A1A1A", marginBottom: "2px" }}>{t.label}</p>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", color: "#1A1A1A", opacity: 0.4, letterSpacing: "0.02em" }}>{t.sub}</p>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
     </main>
   );
 }
