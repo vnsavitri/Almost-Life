@@ -39,21 +39,21 @@ export default function Branches() {
   };
 
   return (
-    <main className="grain" style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <main className="grain" style={{ backgroundColor: "#BCD2EE", color: "#52050A", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <StepProgress current={2} />
 
       {/* Nav */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1rem 2rem", borderBottom: "1px solid rgba(26,26,26,0.06)" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1rem 2rem", borderBottom: "1px solid rgba(82,5,10,0.06)" }}>
         <button
           onClick={() => { sessionStorage.removeItem("almost_return_mode"); navigate(returnMode ? "/result" : "/upload"); }}
-          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#1A1A1A", opacity: 0.35, background: "none", border: "none", cursor: "pointer" }}
+          style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#52050A", opacity: 0.35, background: "none", border: "none", cursor: "pointer" }}
         >
           ← {returnMode ? "Back to result" : "Back"}
         </button>
-        <button onClick={() => { clearSession(); navigate("/"); }} style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "1rem", color: "#1A1A1A", opacity: 0.35, background: "none", border: "none", cursor: "pointer" }}>
+        <button onClick={() => { clearSession(); navigate("/"); }} style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "1rem", color: "#52050A", opacity: 0.35, background: "none", border: "none", cursor: "pointer" }}>
           Almost
         </button>
-        <button onClick={() => { clearSession(); navigate("/"); }} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#1A1A1A", opacity: 0.25, background: "none", border: "none", cursor: "pointer" }}>
+        <button onClick={() => { clearSession(); navigate("/"); }} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#52050A", opacity: 0.25, background: "none", border: "none", cursor: "pointer" }}>
           Start over
         </button>
       </div>
@@ -61,14 +61,14 @@ export default function Branches() {
       <div style={{ flex: 1, maxWidth: "860px", width: "100%", margin: "0 auto", padding: "3rem 2rem 5rem" }}>
 
         {/* Page header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "3rem", borderBottom: "1px solid rgba(26,26,26,0.1)", paddingBottom: "1.5rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "3rem", borderBottom: "1px solid rgba(82,5,10,0.1)", paddingBottom: "1.5rem" }}>
           <div>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "#E07856", opacity: 0.7, marginBottom: "0.5rem" }}>Step two</p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "#832161", opacity: 0.7, marginBottom: "0.5rem" }}>Step two</p>
             <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(1.75rem, 4vw, 2.5rem)", fontWeight: 300, letterSpacing: "-0.02em", lineHeight: 1.1 }}>
               {returnMode ? "Pick a different fork" : "Where did the road fork?"}
             </h1>
           </div>
-          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "5rem", fontWeight: 200, color: "#1A1A1A", opacity: 0.05, lineHeight: 1, flexShrink: 0, marginLeft: "1rem" }}>02</span>
+          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "5rem", fontWeight: 200, color: "#52050A", opacity: 0.05, lineHeight: 1, flexShrink: 0, marginLeft: "1rem" }}>02</span>
         </div>
 
         {loading && (
@@ -76,11 +76,11 @@ export default function Branches() {
             <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.9375rem", opacity: 0.35, marginBottom: "2.5rem" }}>Reading your history...</p>
             <style>{`@keyframes shimmer { 0%,100%{opacity:.3} 50%{opacity:.7} }`}</style>
             {[1, 2, 3].map(i => (
-              <div key={i} style={{ borderTop: "1px solid rgba(26,26,26,0.1)", padding: "2rem 0", display: "flex", gap: "2rem" }}>
-                <div style={{ width: "5rem", height: "4rem", backgroundColor: "rgba(26,26,26,0.06)", animation: `shimmer 1.8s ease-in-out ${i * 0.2}s infinite` }} />
+              <div key={i} style={{ borderTop: "1px solid rgba(82,5,10,0.1)", padding: "2rem 0", display: "flex", gap: "2rem" }}>
+                <div style={{ width: "5rem", height: "4rem", backgroundColor: "rgba(82,5,10,0.06)", animation: `shimmer 1.8s ease-in-out ${i * 0.2}s infinite` }} />
                 <div style={{ flex: 1 }}>
-                  <div style={{ height: "0.875rem", backgroundColor: "rgba(26,26,26,0.06)", marginBottom: "0.5rem", width: "70%", animation: `shimmer 1.8s ease-in-out ${i * 0.2 + 0.1}s infinite` }} />
-                  <div style={{ height: "0.875rem", backgroundColor: "rgba(26,26,26,0.06)", width: "50%", animation: `shimmer 1.8s ease-in-out ${i * 0.2 + 0.2}s infinite` }} />
+                  <div style={{ height: "0.875rem", backgroundColor: "rgba(82,5,10,0.06)", marginBottom: "0.5rem", width: "70%", animation: `shimmer 1.8s ease-in-out ${i * 0.2 + 0.1}s infinite` }} />
+                  <div style={{ height: "0.875rem", backgroundColor: "rgba(82,5,10,0.06)", width: "50%", animation: `shimmer 1.8s ease-in-out ${i * 0.2 + 0.2}s infinite` }} />
                 </div>
               </div>
             ))}
@@ -89,7 +89,7 @@ export default function Branches() {
 
         {error && (
           <div style={{ padding: "2rem 0" }}>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.875rem", color: "#E07856", marginBottom: "1.5rem" }}>{error}</p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.875rem", color: "#832161", marginBottom: "1.5rem" }}>{error}</p>
             <button onClick={() => navigate("/upload")} className="ruled-action">← Try again</button>
           </div>
         )}
@@ -105,23 +105,23 @@ export default function Branches() {
               <button
                 key={branch.id}
                 onClick={() => pickBranch(branch)}
-                style={{ display: "grid", gridTemplateColumns: "6rem 1fr", gap: "2rem", alignItems: "start", width: "100%", textAlign: "left", background: "none", border: "none", borderTop: "1px solid rgba(26,26,26,0.1)", padding: "2rem 0", cursor: "pointer", transition: "padding-left 0.2s" }}
-                onMouseEnter={e => { e.currentTarget.style.paddingLeft = "0.75rem"; (e.currentTarget.querySelector(".yr") as HTMLElement).style.color = "#E07856"; (e.currentTarget.querySelector(".yr") as HTMLElement).style.opacity = "0.7"; }}
-                onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0"; (e.currentTarget.querySelector(".yr") as HTMLElement).style.color = "#1A1A1A"; (e.currentTarget.querySelector(".yr") as HTMLElement).style.opacity = "0.12"; }}
+                style={{ display: "grid", gridTemplateColumns: "6rem 1fr", gap: "2rem", alignItems: "start", width: "100%", textAlign: "left", background: "none", border: "none", borderTop: "1px solid rgba(82,5,10,0.1)", padding: "2rem 0", cursor: "pointer", transition: "padding-left 0.2s" }}
+                onMouseEnter={e => { e.currentTarget.style.paddingLeft = "0.75rem"; (e.currentTarget.querySelector(".yr") as HTMLElement).style.color = "#832161"; (e.currentTarget.querySelector(".yr") as HTMLElement).style.opacity = "0.7"; }}
+                onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0"; (e.currentTarget.querySelector(".yr") as HTMLElement).style.color = "#52050A"; (e.currentTarget.querySelector(".yr") as HTMLElement).style.opacity = "0.12"; }}
               >
-                <span className="yr" style={{ fontFamily: "'Fraunces', Georgia, serif", fontWeight: 200, fontSize: "clamp(2rem, 5vw, 3rem)", lineHeight: 1, color: "#1A1A1A", opacity: 0.12, letterSpacing: "-0.02em", transition: "color 0.2s, opacity 0.2s", display: "block", paddingTop: "0.1rem" }}>
+                <span className="yr" style={{ fontFamily: "'Fraunces', Georgia, serif", fontWeight: 200, fontSize: "clamp(2rem, 5vw, 3rem)", lineHeight: 1, color: "#52050A", opacity: 0.12, letterSpacing: "-0.02em", transition: "color 0.2s, opacity 0.2s", display: "block", paddingTop: "0.1rem" }}>
                   {branch.year}
                 </span>
                 <div>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#1A1A1A", opacity: 0.3, marginBottom: "0.5rem" }}>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#52050A", opacity: 0.3, marginBottom: "0.5rem" }}>
                     Fork {String(idx + 1).padStart(2, "0")}
                   </p>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.9375rem", lineHeight: 1.6, color: "#1A1A1A", maxWidth: "44ch" }}>{branch.framing}</p>
-                  <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#1A1A1A", opacity: 0.35, marginTop: "0.5rem" }}>{branch.context}</p>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.9375rem", lineHeight: 1.6, color: "#52050A", maxWidth: "44ch" }}>{branch.framing}</p>
+                  <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#52050A", opacity: 0.35, marginTop: "0.5rem" }}>{branch.context}</p>
                 </div>
               </button>
             ))}
-            {branches.length > 0 && <div style={{ borderTop: "1px solid rgba(26,26,26,0.1)" }} />}
+            {branches.length > 0 && <div style={{ borderTop: "1px solid rgba(82,5,10,0.1)" }} />}
           </div>
         )}
       </div>

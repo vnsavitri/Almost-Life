@@ -37,9 +37,9 @@ export default function Share() {
 
   if (invalid) {
     return (
-      <main style={{ backgroundColor: "#F5EFE6", color: "#1A1A1A", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.5rem", padding: "2rem" }}>
+      <main style={{ backgroundColor: "#BCD2EE", color: "#52050A", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.5rem", padding: "2rem" }}>
         <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "1.25rem", opacity: 0.5 }}>This share link has expired or is invalid.</p>
-        <button onClick={() => navigate("/")} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", backgroundColor: "#1A1A1A", color: "#F5EFE6", border: "none", padding: "0.75rem 1.75rem", cursor: "pointer", letterSpacing: "0.04em" }}>
+        <button onClick={() => navigate("/")} style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", backgroundColor: "#52050A", color: "#BCD2EE", border: "none", padding: "0.75rem 1.75rem", cursor: "pointer", letterSpacing: "0.04em" }}>
           Generate yours →
         </button>
       </main>
@@ -51,36 +51,36 @@ export default function Share() {
   const templateLabel = TEMPLATE_LABELS[payload.t];
 
   return (
-    <main style={{ backgroundColor: "#1A1A1A", color: "#F5EFE6", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem" }}>
+    <main style={{ backgroundColor: "#52050A", color: "#BCD2EE", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem" }}>
 
       {/* Card */}
       <div style={{ width: "100%", maxWidth: "560px" }}>
 
         {/* Almost wordmark */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "3rem" }}>
-          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "1.125rem", color: "#F5EFE6", opacity: 0.35 }}>Almost</span>
-          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#F5EFE6", opacity: 0.2 }}>the life you didn't quite live</span>
+          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "1.125rem", color: "#BCD2EE", opacity: 0.35 }}>Almost</span>
+          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#BCD2EE", opacity: 0.2 }}>the life you didn't quite live</span>
         </div>
 
         {/* Year */}
-        <div style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(4rem, 15vw, 7rem)", fontWeight: 300, lineHeight: 0.9, color: "#E07856", opacity: 0.8, marginBottom: "1.5rem", letterSpacing: "-0.02em" }}>
+        <div style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(4rem, 15vw, 7rem)", fontWeight: 300, lineHeight: 0.9, color: "#832161", opacity: 0.8, marginBottom: "1.5rem", letterSpacing: "-0.02em" }}>
           {payload.y}
         </div>
 
         {/* Fork summary */}
-        <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(1.25rem, 3.5vw, 1.75rem)", fontWeight: 300, lineHeight: 1.25, color: "#F5EFE6", marginBottom: "1rem", maxWidth: "42ch" }}>
+        <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: "clamp(1.25rem, 3.5vw, 1.75rem)", fontWeight: 300, lineHeight: 1.25, color: "#BCD2EE", marginBottom: "1rem", maxWidth: "42ch" }}>
           {payload.fs}
         </h1>
 
         {/* Alt identity */}
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.875rem", color: "#F5EFE6", opacity: 0.5, marginBottom: "2.5rem", letterSpacing: "0.02em" }}>
+        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.875rem", color: "#BCD2EE", opacity: 0.5, marginBottom: "2.5rem", letterSpacing: "0.02em" }}>
           {payload.ar} · {payload.al}
         </p>
 
         {/* Quote */}
         {payload.q && (
           <blockquote style={{ borderLeft: "2px solid rgba(224,120,86,0.4)", paddingLeft: "1rem", marginBottom: "3rem" }}>
-            <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.9375rem", color: "#F5EFE6", opacity: 0.6, lineHeight: 1.5 }}>
+            <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.9375rem", color: "#BCD2EE", opacity: 0.6, lineHeight: 1.5 }}>
               "{payload.q}"
             </p>
           </blockquote>
@@ -91,12 +91,12 @@ export default function Share() {
 
         {/* Template badge + CTA */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#F5EFE6", opacity: 0.25 }}>
+          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#BCD2EE", opacity: 0.25 }}>
             {templateLabel} · generated by Almost
           </span>
           <button
             onClick={() => { window.location.href = `${window.location.origin}${base}/`; }}
-            style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", backgroundColor: "#E07856", color: "#fff", border: "none", padding: "0.6rem 1.4rem", cursor: "pointer", letterSpacing: "0.04em", borderRadius: "2px", flexShrink: 0 }}
+            style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8125rem", backgroundColor: "#832161", color: "#fff", border: "none", padding: "0.6rem 1.4rem", cursor: "pointer", letterSpacing: "0.04em", borderRadius: "2px", flexShrink: 0 }}
           >
             Generate yours →
           </button>
@@ -105,7 +105,7 @@ export default function Share() {
       </div>
 
       {/* Subtle footer */}
-      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", color: "#F5EFE6", opacity: 0.15, marginTop: "4rem", letterSpacing: "0.04em", textAlign: "center" }}>
+      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6875rem", color: "#BCD2EE", opacity: 0.15, marginTop: "4rem", letterSpacing: "0.04em", textAlign: "center" }}>
         almost · parallel lives for parallel universes
       </p>
     </main>
