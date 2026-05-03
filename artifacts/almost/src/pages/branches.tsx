@@ -41,8 +41,8 @@ export default function Branches() {
 
   const pickBranch = (branch: Branch) => {
     sessionStorage.setItem("almost_branch", JSON.stringify(branch));
-    sessionStorage.removeItem("almost_life");
-    navigate("/loading");
+    sessionStorage.removeItem("almost_life_result");
+    navigate("/template-picker");
   };
 
   return (
