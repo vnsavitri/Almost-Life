@@ -110,7 +110,7 @@ export default function Upload() {
             style={{
               flex: 1,
               border: `1px solid ${isDragging ? "#832161" : "rgba(82,5,10,0.15)"}`,
-              backgroundColor: isDragging ? "rgba(224,120,86,0.04)" : "transparent",
+              backgroundColor: isDragging ? "rgba(131,33,97,0.05)" : "transparent",
               cursor: "pointer",
               display: "flex",
               flexDirection: "column",
