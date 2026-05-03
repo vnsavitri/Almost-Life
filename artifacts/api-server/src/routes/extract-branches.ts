@@ -31,30 +31,30 @@ Rules:
 - Tone: dry, knowing, slightly amused — like a smart friend who's noticed something
 - Return between 3 and 5 branches, ranked by how interesting the fork is`;
 
-const MAYA_DEMO_BRANCHES = [
+const ZELDA_DEMO_BRANCHES = [
   {
     id: "1",
     year: "2014",
-    framing: "You closed the Berlin studio and bought a one-way ticket to Sydney. What if you'd stayed?",
-    context: "Maya ran a small design studio in Berlin-Mitte for three years before relocating to Australia",
+    framing: "You accepted the Triforce of Wisdom and sealed yourself in the castle for 100 years. What if you'd just... declined?",
+    context: "Zelda chose to use her divine power to contain Ganon, sacrificing her own freedom in the process",
   },
   {
     id: "2",
-    year: "2017",
-    framing: "You left the Sydney agency after 18 months to go freelance. What if you'd taken the senior role they offered instead?",
-    context: "Maya turned down a senior CD role to go independent",
+    year: "2010",
+    framing: "You left Kakariko Village to pursue Sheikah technology research. What if you'd stayed and opened that pottery studio?",
+    context: "Zelda briefly considered a quieter life in Kakariko Village before being drawn back into royal duties",
   },
   {
     id: "3",
-    year: "2020",
-    framing: "You started Hype Studios alone during a global pandemic. What if you'd waited one more year?",
-    context: "Maya launched her solo studio in March 2020",
+    year: "2017",
+    framing: "You woke Link up from his own suspended animation. What if you'd decided he needed five more years?",
+    context: "Zelda made the call to wake Link earlier than strictly necessary, which accelerated the Calamity timeline",
   },
   {
     id: "4",
-    year: "2011",
-    framing: "You chose the Bauhaus-Universität over the safe grad scheme at BBDO. What if you hadn't?",
-    context: "Maya turned down a corporate grad role to do a design MFA",
+    year: "2006",
+    framing: "You enrolled at the Royal Academy to study prophecy. What if you'd done the gap year in Gerudo Town instead?",
+    context: "Zelda chose formal education over a sabbatical that would have taken her far from royal responsibilities",
   },
 ];
 
@@ -62,7 +62,7 @@ router.post("/extract-branches", async (req, res) => {
   const { pdf_b64, demo } = req.body as { pdf_b64?: string; demo?: boolean };
 
   if (demo) {
-    res.json({ branches: MAYA_DEMO_BRANCHES });
+    res.json({ branches: ZELDA_DEMO_BRANCHES });
     return;
   }
 
