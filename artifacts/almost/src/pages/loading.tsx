@@ -62,8 +62,17 @@ export default function Loading() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ branch, template_type: templateType, demo: isDemo || undefined, pdf_b64: pdfB64 || undefined }),
       })
-        .then(r => { if (!r.ok) throw new Error("failed"); return r.json(); })
-        .then(data => { if (data.life) sessionStorage.setItem("almost_life_result", JSON.stringify(data.life)); navigate("/result"); })
+        .then(async r => {
+          if (r.status === 429) {
+            const err = await r.json().catch(() => ({})) as { reset_in_hours?: number };
+            sessionStorage.setItem("almost_rate_limited", JSON.stringify({ reset_in_hours: err.reset_in_hours ?? 24 }));
+            navigate("/result");
+            return;
+          }
+          if (!r.ok) throw new Error("failed");
+          return r.json();
+        })
+        .then(data => { if (data?.life) sessionStorage.setItem("almost_life_result", JSON.stringify(data.life)); if (data) navigate("/result"); })
         .catch(() => navigate("/result"));
     }
 

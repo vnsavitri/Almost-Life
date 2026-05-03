@@ -99,7 +99,15 @@ export default function Result() {
   const [shareOpen, setShareOpen] = useState(false);
   const templateRef = useRef<HTMLDivElement>(null);
 
+  const [rateLimited, setRateLimited] = useState<{ reset_in_hours: number } | null>(null);
+
   useEffect(() => {
+    const rlRaw = sessionStorage.getItem("almost_rate_limited");
+    if (rlRaw) {
+      sessionStorage.removeItem("almost_rate_limited");
+      try { setRateLimited(JSON.parse(rlRaw)); } catch { setRateLimited({ reset_in_hours: 24 }); }
+      return;
+    }
     const raw = sessionStorage.getItem("almost_life_result");
     const templateKey = (sessionStorage.getItem("almost_template_type") || "linkedin_ghost") as TemplateKey;
     setTemplate(templateKey);
@@ -119,6 +127,28 @@ export default function Result() {
     sessionStorage.removeItem("almost_branch");
     sessionStorage.removeItem("almost_life_result");
     navigate("/branches");
+  }
+
+  if (rateLimited) {
+    return (
+      <main className="grain" style={{ backgroundColor: "#BCD2EE", color: "#52050A", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem" }}>
+        <div style={{ maxWidth: "480px", width: "100%", textAlign: "left" }}>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "#832161", opacity: 0.6, marginBottom: "1.5rem" }}>
+            Limit reached
+          </p>
+          <h1 style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(1.75rem, 6vw, 2.5rem)", lineHeight: 1.15, marginBottom: "1.25rem" }}>
+            You've generated your 3 lives for today.
+          </h1>
+          <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontWeight: 300, fontSize: "1rem", color: "#52050A", opacity: 0.55, lineHeight: 1.6, marginBottom: "2.5rem" }}>
+            The other versions of you will still be there in ~{rateLimited.reset_in_hours}h. Come back tomorrow.
+          </p>
+          <div style={{ borderTop: "1px solid rgba(82,5,10,0.1)", paddingTop: "1.5rem", display: "flex", gap: "2rem" }}>
+            <button onClick={() => navigate("/")} className="ruled-action">← Home</button>
+            <button onClick={() => navigate("/about")} className="ruled-action">About Almost</button>
+          </div>
+        </div>
+      </main>
+    );
   }
 
   if (failed) {
