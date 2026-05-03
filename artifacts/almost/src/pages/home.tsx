@@ -130,13 +130,15 @@ export default function Home() {
             <span className="arr" style={{ display: "inline-block", transition: "transform 0.2s ease" }}>→</span>
           </button>
 
-          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#52050A", opacity: 0.3 }}>
+          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#52050A", opacity: 0.55 }}>
             or{" "}
             <button
               onClick={() => { sessionStorage.setItem("almost_demo", "true"); sessionStorage.removeItem("almost_pdf_b64"); navigate("/branches"); }}
-              style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#52050A", opacity: 1, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textDecorationColor: "rgba(82,5,10,0.3)", textUnderlineOffset: "3px", padding: 0 }}
+              style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.8125rem", color: "#52050A", opacity: 1, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textDecorationColor: "rgba(82,5,10,0.5)", textUnderlineOffset: "3px", padding: 0 }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#832161")}
+              onMouseLeave={e => (e.currentTarget.style.color = "#52050A")}
             >
-              what if Zelda hadn't sealed Ganon?
+              see if Zelda didn't fight Ganon?
             </button>
           </span>
         </div>
