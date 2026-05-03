@@ -123,9 +123,19 @@ export default function Home() {
         <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.625rem", letterSpacing: "0.06em", color: "#52050A", opacity: 0.25, maxWidth: "28ch", lineHeight: 1.6 }}>
           Upload your LinkedIn. Pick a fork in the road. See the other version of you.
         </p>
-        <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.625rem", color: "#52050A", opacity: 0.2 }}>
-          Powered by Claude
-        </span>
+        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          <button
+            onClick={() => navigate("/about")}
+            style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.5rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#52050A", opacity: 0.2, background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = "0.5")}
+            onMouseLeave={e => (e.currentTarget.style.opacity = "0.2")}
+          >
+            About
+          </button>
+          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: "italic", fontSize: "0.625rem", color: "#52050A", opacity: 0.2 }}>
+            Powered by Claude
+          </span>
+        </div>
       </div>
 
     </main>
